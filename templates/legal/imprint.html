@@ -1,0 +1,116 @@
+{% extends 'base.html' %}
+
+{% block title %}Impressum - Elegant Progressive Ladies Club Munich e.V.{% endblock %}
+
+{% block content %}
+<!-- Impressum Header mit Hintergrundbild -->
+<section class="py-32 bg-gradient-to-r from-primary to-purple-800 text-white relative overflow-hidden">
+    <!-- Hintergrund-Elemente -->
+    <div class="absolute top-0 left-0 w-full h-full bg-pattern-dots opacity-10"></div>
+    
+    <!-- Floating Shapes für visuelles Interesse -->
+    <div class="absolute inset-0">
+        <div class="floating-shapes">
+            <div class="shape shape-1 opacity-20"></div>
+            <div class="shape shape-2 opacity-20"></div>
+        </div>
+    </div>
+    
+    <div class="container mx-auto px-4 md:px-6 relative z-10">
+        <h1 class="text-4xl md:text-5xl font-serif font-bold mb-6 text-center">Impressum</h1>
+        <div class="w-24 h-1 bg-white mx-auto mb-8"></div>
+        <p class="text-xl text-center max-w-3xl mx-auto">Rechtliche Informationen über den Elegant Progressive Ladies Club Munich e.V.</p>
+    </div>
+</section>
+
+<!-- Impressum Inhalt -->
+<section class="py-16 bg-light">
+    <div class="container mx-auto px-4 md:px-6">
+        <div class="bg-white rounded-lg shadow-xl p-8 md:p-10 hover-card transform transition-all duration-300">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                <!-- Linke Spalte: Hauptkontakt -->
+                <div>
+                    <div class="mb-8 pb-8 border-b border-gray-200">
+                        <h2 class="text-2xl font-bold mb-6 gradient-text">Elegant Progressive Ladies Club Munich e.V.</h2>
+                        
+                        <div class="flex items-start mb-4">
+                            <div class="w-10 h-10 bg-primary bg-opacity-10 rounded-full flex items-center justify-center flex-shrink-0 mr-4">
+                                <i class="fas fa-map-marker-alt text-primary"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-medium text-gray-900">Anschrift</h4>
+                                <p class="text-gray-600">München<br>
+                                Deutschland</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start mb-4">
+                            <div class="w-10 h-10 bg-primary bg-opacity-10 rounded-full flex items-center justify-center flex-shrink-0 mr-4">
+                                <i class="fas fa-phone-alt text-primary"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-medium text-gray-900">Telefon</h4>
+                                <p class="text-gray-600">N/A</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start">
+                            <div class="w-10 h-10 bg-primary bg-opacity-10 rounded-full flex items-center justify-center flex-shrink-0 mr-4">
+                                <i class="fas fa-envelope text-primary"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-medium text-gray-900">E-Mail</h4>
+                                <a href="mailto:buchneresther08@gmail.com" class="text-primary hover:text-secondary transition-colors duration-200">buchneresther08@gmail.com</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h3 class="text-xl font-bold mb-4 gradient-text">Vertreten durch:</h3>
+                        <p class="mb-6 text-gray-600">
+                            Lorem Ipsum (1. Vorsitzende)<br>
+                            Dolor Sit (2. Vorsitzende)<br>
+                            Amet Consectetur (Schatzmeisterin)
+                        </p>
+                    </div>
+                </div>
+                
+                <!-- Rechte Spalte: Rechtliche Informationen -->
+                <div>
+                    <div class="mb-8 pb-8 border-b border-gray-200">
+                        <h3 class="text-xl font-bold mb-4 gradient-text">Registereintrag</h3>
+                        <p class="mb-6 text-gray-600">
+                            Eingetragen im Vereinsregister.<br>
+                            Registergericht: Amtsgericht München<br>
+                            Registernummer: VR 12345
+                        </p>
+                    </div>
+                    
+                    <div class="mb-8 pb-8 border-b border-gray-200">
+                        <h3 class="text-xl font-bold mb-4 gradient-text">Verantwortlich für den Inhalt</h3>
+                        <p class="mb-6 text-gray-600">
+                            Nach § 55 Abs. 2 RStV:<br>
+                            Lorem Ipsum<br>
+                            München
+                        </p>
+                    </div>
+                    
+                    <div>
+                        <h3 class="text-xl font-bold mb-4 gradient-text">Haftungshinweis</h3>
+                        <p class="text-gray-600">
+                            Trotz sorgfältiger inhaltlicher Kontrolle übernehmen wir keine Haftung für die Inhalte externer Links. Für den Inhalt der verlinkten Seiten sind ausschließlich deren Betreiber verantwortlich.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Kontakt-Button -->
+            <div class="mt-12 text-center">
+                <a href="{{ url_for('index') }}#contact" class="px-8 py-3 bg-primary text-white rounded-md font-medium hover:bg-white hover:text-primary hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 inline-block">
+                    Kontakt aufnehmen
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %} 

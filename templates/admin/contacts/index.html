@@ -1,0 +1,107 @@
+{% extends 'admin/base.html' %}
+
+{% block title %}Kontaktanfragen - Admin - Elegant Progressive Ladies Club Munich e.V.{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1 class="admin-title">
+                    <i class="fas fa-envelope"></i> Kontaktanfragen
+                </h1>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="admin-card">
+                <div class="admin-card-header">
+                    <h2>Alle Kontaktanfragen</h2>
+                </div>
+                <div class="admin-card-body">
+                    {% if contacts %}
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Name</th>
+                                        <th>E-Mail</th>
+                                        <th>Betreff</th>
+                                        <th>Newsletter</th>
+                                        <th>Status</th>
+                                        <th>Datum</th>
+                                        <th width="150">Aktionen</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for contact in contacts %}
+                                    <tr>
+                                        <td>{{ contact.id }}</td>
+                                        <td>{{ contact.name }}</td>
+                                        <td>{{ contact.email }}</td>
+                                        <td>{{ contact.subject }}</td>
+                                        <td>
+                                            {% if contact.newsletter %}
+                                                <span class="badge bg-success">Ja</span>
+                                            {% else %}
+                                                <span class="badge bg-secondary">Nein</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if contact.status == 'neu' %}
+                                                <span class="badge bg-danger">Neu</span>
+                                            {% elif contact.status == 'in_bearbeitung' %}
+                                                <span class="badge bg-warning">In Bearbeitung</span>
+                                            {% else %}
+                                                <span class="badge bg-success">Abgeschlossen</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>{{ contact.created_at.strftime('%d.%m.%Y') }}</td>
+                                        <td>
+                                            <a href="{{ url_for('contact_view', id=contact.id) }}" class="btn btn-sm btn-info">
+                                                <i class="fas fa-eye"></i>
+                                            </a>
+                                            <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal{{ contact.id }}">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                            
+                                            <!-- Delete Modal -->
+                                            <div class="modal fade" id="deleteModal{{ contact.id }}" tabindex="-1" aria-labelledby="deleteModalLabel{{ contact.id }}" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="deleteModalLabel{{ contact.id }}">Kontaktanfrage löschen</h5>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            Sind Sie sicher, dass Sie die Kontaktanfrage von "{{ contact.name }}" löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden.
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Abbrechen</button>
+                                                            <form action="{{ url_for('contact_delete', id=contact.id) }}" method="post">
+                                                                <button type="submit" class="btn btn-danger">Löschen</button>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <div class="alert alert-info">
+                            Keine Kontaktanfragen vorhanden.
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 
