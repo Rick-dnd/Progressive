@@ -17,22 +17,11 @@
                     <a href="{{ url_for('index') }}#news" class="text-sm font-medium transition duration-200 hover:text-white px-4 py-1.5 rounded-full text-gray-200 hover:bg-white hover:bg-opacity-10">News</a>
                     <a href="{{ url_for('index') }}#gallery" class="text-sm font-medium transition duration-200 hover:text-white px-4 py-1.5 rounded-full text-gray-200 hover:bg-white hover:bg-opacity-10">Gallery</a>
                     <a href="{{ url_for('index') }}#contact" class="text-sm font-medium transition duration-200 hover:text-white px-4 py-1.5 rounded-full text-gray-200 hover:bg-white hover:bg-opacity-10">Contact</a>
-                    <a href="{{ url_for('imprint') }}" class="text-sm font-medium transition duration-200 hover:text-white px-4 py-1.5 rounded-full text-gray-200 hover:bg-white hover:bg-opacity-10">Imprint</a>
-                    <a href="{{ url_for('privacy') }}" class="text-sm font-medium transition duration-200 hover:text-white px-4 py-1.5 rounded-full text-gray-200 hover:bg-white hover:bg-opacity-10">Privacy</a>
-                    
-                    <div class="h-4 border-r border-gray-400 mx-2 opacity-30"></div>
                     
                     <!-- Language Selector -->
                     <div class="px-3 py-1 text-sm font-medium text-gray-200">
                         EN
                     </div>
-                    
-                    <!-- Dark Mode Toggle -->
-                    <button class="p-1 rounded-full text-gray-200 hover:bg-white hover:bg-opacity-10">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" />
-                        </svg>
-                    </button>
                 </nav>
             </div>
             
@@ -61,16 +50,9 @@
                 <a href="{{ url_for('index') }}#news" @click="mobileMenuOpen = false" class="text-sm font-medium text-gray-200 hover:text-white transition duration-200">News</a>
                 <a href="{{ url_for('index') }}#gallery" @click="mobileMenuOpen = false" class="text-sm font-medium text-gray-200 hover:text-white transition duration-200">Gallery</a>
                 <a href="{{ url_for('index') }}#contact" @click="mobileMenuOpen = false" class="text-sm font-medium text-gray-200 hover:text-white transition duration-200">Contact</a>
-                <a href="{{ url_for('imprint') }}" @click="mobileMenuOpen = false" class="text-sm font-medium text-gray-200 hover:text-white transition duration-200">Imprint</a>
-                <a href="{{ url_for('privacy') }}" @click="mobileMenuOpen = false" class="text-sm font-medium text-gray-200 hover:text-white transition duration-200">Privacy</a>
                 
-                <div class="border-t border-gray-700 pt-2 mt-2 flex justify-between items-center">
+                <div class="border-t border-gray-700 pt-2 mt-2">
                     <span class="text-sm font-medium text-gray-200">EN</span>
-                    <button class="p-1 rounded-full text-gray-200 hover:bg-white hover:bg-opacity-10">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" />
-                        </svg>
-                    </button>
                 </div>
             </nav>
         </div>
