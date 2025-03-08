@@ -265,6 +265,13 @@ def index():
     # Verbesserte Sortierung: Erst nach Position (höhere Werte zuerst), dann aktuelle Projekte, dann nach Startdatum, dann nach ID
     projects = Project.query.order_by(Project.position.desc(), Project.is_current.desc(), Project.start_date.desc(), Project.id.asc()).all()
     
+    # DEBUG: Alle Projekte anzeigen
+    print("\n=== DEBUG: PROJEKTE FÜR FRONTEND ===")
+    print(f"Anzahl der Projekte: {len(projects)}")
+    for idx, project in enumerate(projects):
+        print(f"Projekt {idx+1}: ID={project.id}, Titel='{project.title}', is_current={project.is_current}, Position={project.position}")
+    print("=====================================\n")
+    
     # News paginieren
     page = request.args.get('page', 1, type=int)
     per_page = 3  # Anzahl der News pro Seite
@@ -324,7 +331,7 @@ def login():
         user.last_login_at = datetime.utcnow()
         db.session.commit()
         
-        flash('Sie wurden erfolgreich angemeldet.', 'success')
+        flash('You have been successfully logged in.', 'success')
         
         # Weiterleitung zur Zielseite oder zum Dashboard
         next_page = request.args.get('next')
@@ -333,21 +340,21 @@ def login():
         else:
             return redirect(url_for('admin_dashboard'))
     else:
-        flash('Ungültiger Benutzername oder Passwort.', 'danger')
+        flash('Invalid username or password.', 'danger')
         return redirect(url_for('admin_login'))
 
 @app.route('/admin/logout')
 @login_required
 def logout():
     logout_user()
-    flash('Sie wurden erfolgreich abgemeldet.', 'success')
+    flash('You have been successfully logged out.', 'success')
     return redirect(url_for('index'))
 
 @app.route('/admin-dashboard')
 @login_required
 def admin_dashboard():
     if not current_user.is_admin:
-        flash('Sie haben keine Berechtigung, auf diesen Bereich zuzugreifen.', 'danger')
+        flash('You do not have permission to access this area.', 'danger')
         return redirect(url_for('index'))
     
     project_count = Project.query.count()
@@ -355,15 +362,11 @@ def admin_dashboard():
     gallery_count = Gallery.query.count()
     contact_count = Contact.query.count()
     
-    # Letzten Kontaktanfragen
-    latest_contacts = Contact.query.order_by(Contact.created_at.desc()).limit(5).all()
-    
     return render_template('admin/dashboard.html', 
                           project_count=project_count,
                           news_count=news_count,
                           gallery_count=gallery_count,
-                          contact_count=contact_count,
-                          latest_contacts=latest_contacts)
+                          contact_count=contact_count)
 
 # API-Endpunkte
 @app.route('/api/contact', methods=['POST'])
@@ -456,7 +459,7 @@ def project_index():
         flash('Sie haben keine Berechtigung, auf diesen Bereich zuzugreifen.', 'danger')
         return redirect(url_for('index'))
     
-    projects = Project.query.order_by(Project.is_current.desc(), Project.start_date.desc()).all()
+    projects = Project.query.order_by(Project.position.desc(), Project.is_current.desc(), Project.start_date.desc()).all()
     return render_template('admin/projects/index.html', projects=projects)
 
 @app.route('/admin/projects/create', methods=['GET', 'POST'])
@@ -471,7 +474,26 @@ def project_create():
         description = request.form.get('description')
         details = request.form.get('details')
         category = request.form.get('category')
-        icon = request.form.get('icon')
+        
+        # Automatisch das richtige Icon basierend auf der Kategorie setzen
+        icon_map = {
+            'bildung': 'fa-graduation-cap',
+            'hilfe': 'fa-hands-helping',
+            'spenden': 'fa-donate',
+            'feiern': 'fa-glass-cheers',
+            'natur': 'fa-leaf',
+            'gemeinschaft': 'fa-users',
+            'kultur': 'fa-theater-masks',
+            'sport': 'fa-running',
+            'technologie': 'fa-microchip',
+            'gesundheit': 'fa-heartbeat',
+            'familie': 'fa-home',
+            'andere': 'fa-project-diagram'
+        }
+        
+        # Icon automatisch basierend auf der Kategorie setzen
+        icon = icon_map.get(category, 'fa-project-diagram')
+        
         color = request.form.get('color')
         start_date = datetime.strptime(request.form.get('start_date'), '%Y-%m-%d').date()
         is_current = 'is_current' in request.form
@@ -515,7 +537,26 @@ def project_edit(id):
         project.description = request.form.get('description')
         project.details = request.form.get('details')
         project.category = request.form.get('category')
-        project.icon = request.form.get('icon')
+        
+        # Automatisch das richtige Icon basierend auf der Kategorie setzen
+        icon_map = {
+            'bildung': 'fa-graduation-cap',
+            'hilfe': 'fa-hands-helping',
+            'spenden': 'fa-donate',
+            'feiern': 'fa-glass-cheers',
+            'natur': 'fa-leaf',
+            'gemeinschaft': 'fa-users',
+            'kultur': 'fa-theater-masks',
+            'sport': 'fa-running',
+            'technologie': 'fa-microchip',
+            'gesundheit': 'fa-heartbeat',
+            'familie': 'fa-home',
+            'andere': 'fa-project-diagram'
+        }
+        
+        # Icon automatisch basierend auf der Kategorie setzen
+        project.icon = icon_map.get(project.category, 'fa-project-diagram')
+        
         project.color = request.form.get('color')
         project.start_date = datetime.strptime(request.form.get('start_date'), '%Y-%m-%d').date()
         project.is_current = 'is_current' in request.form
@@ -542,10 +583,15 @@ def project_delete(id):
     
     project = Project.query.get_or_404(id)
     
-    db.session.delete(project)
-    db.session.commit()
+    try:
+        db.session.delete(project)
+        db.session.commit()
+        
+        flash('Projekt wurde erfolgreich gelöscht.', 'success')
+    except Exception as e:
+        db.session.rollback()
+        flash(f'Fehler beim Löschen des Projekts: {str(e)}', 'danger')
     
-    flash('Projekt wurde erfolgreich gelöscht.', 'success')
     return redirect(url_for('project_index'))
 
 # News-Verwaltung
@@ -995,6 +1041,27 @@ def contact_delete(id):
     
     flash('Kontaktanfrage wurde erfolgreich gelöscht.', 'success')
     return redirect(url_for('contact_index'))
+
+# Route zum Zurücksetzen der Autoinkrement-Sequenz für die Projekte-Tabelle
+@app.route('/admin/reset-project-sequence', methods=['POST'])
+@login_required
+def reset_project_sequence():
+    if not current_user.is_admin:
+        flash('Sie haben keine Berechtigung, auf diesen Bereich zuzugreifen.', 'danger')
+        return redirect(url_for('index'))
+    
+    try:
+        # SQLite-spezifisches Command zum Zurücksetzen der Sequenz
+        max_id = db.session.execute(text('SELECT MAX(id) FROM projects')).scalar() or 0
+        db.session.execute(text('DELETE FROM sqlite_sequence WHERE name = "projects"'))
+        db.session.execute(text('INSERT INTO sqlite_sequence (name, seq) VALUES ("projects", :max_id)'), {'max_id': max_id})
+        db.session.commit()
+        flash('Die Projekt-ID-Sequenz wurde erfolgreich zurückgesetzt.', 'success')
+    except Exception as e:
+        db.session.rollback()
+        flash(f'Fehler beim Zurücksetzen der Sequenz: {str(e)}', 'danger')
+    
+    return redirect(url_for('project_index'))
 
 if __name__ == '__main__':
     app.run(debug=True) 

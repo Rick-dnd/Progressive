@@ -50,7 +50,7 @@
                     <i class="fas fa-arrow-left"></i>
                 </a>
                 <h1 class="admin-title mb-0">
-                    <i class="fas fa-edit"></i> Galerie-Bild bearbeiten
+                    <i class="fas fa-edit"></i> Edit Gallery Image
                 </h1>
             </div>
         </div>
@@ -60,55 +60,55 @@
         <div class="col-lg-12">
             <div class="admin-card">
                 <div class="admin-card-header">
-                    <h2>Bild-Daten bearbeiten</h2>
+                    <h2>Edit Image Data</h2>
                 </div>
                 <div class="admin-card-body">
                     <form action="{{ url_for('gallery_edit', id=gallery.id) }}" method="post" enctype="multipart/form-data">
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="title" class="form-label">Titel <span class="text-danger">*</span></label>
+                                    <label for="title" class="form-label">Title <span class="text-danger">*</span></label>
                                     <input type="text" class="form-control" id="title" name="title" value="{{ gallery.title }}" required>
                                 </div>
                             </div>
                             
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="order" class="form-label">Reihenfolge</label>
+                                    <label for="order" class="form-label">Order</label>
                                     <input type="number" class="form-control" id="order" name="order" value="{{ gallery.order }}">
-                                    <small class="text-muted">Bilder mit niedrigeren Werten werden zuerst angezeigt</small>
+                                    <small class="text-muted">Images with lower values are displayed first</small>
                                 </div>
                             </div>
                             
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label for="description" class="form-label">Beschreibung</label>
+                                    <label for="description" class="form-label">Description</label>
                                     <textarea class="form-control" id="description" name="description" rows="3">{{ gallery.description or '' }}</textarea>
                                 </div>
                             </div>
                             
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="image_file" class="form-label">Hauptbild</label>
+                                    <label for="image_file" class="form-label">Main Image</label>
                                     <div class="mt-2">
                                         <input type="file" class="form-control" id="image_file" name="image_file" accept="image/*" style="display: none;">
                                         <label for="image_file" class="custom-file-upload">
-                                            <i class="fas fa-cloud-upload-alt"></i> Neues Bild auswählen
+                                            <i class="fas fa-cloud-upload-alt"></i> Select new image
                                         </label>
-                                        <span id="file-selected">Keine neue Datei ausgewählt</span>
+                                        <span id="file-selected">No new file selected</span>
                                     </div>
-                                    <small class="text-muted">Empfohlene Größe: 1200 x 800 Pixel, max. 2MB</small>
+                                    <small class="text-muted">Recommended size: 1200 x 800 pixels, max. 2MB</small>
                                     
                                     <!-- Aktuelles Bild anzeigen -->
                                     <div class="img-container">
-                                        <p class="mb-2">Aktuelles Bild:</p>
-                                        <img id="currentImagePreview" class="img-preview" src="{{ url_for('static', filename=gallery.image) }}" alt="Aktuelles Bild">
+                                        <p class="mb-2">Current Image:</p>
+                                        <img id="currentImagePreview" class="img-preview" src="{{ url_for('static', filename=gallery.image) }}" alt="Current Image">
                                     </div>
                                     
                                     <!-- Neues Bild Vorschau -->
                                     <div class="new-image-container" id="newImageContainer">
-                                        <p class="mb-2">Neues Bild:</p>
-                                        <img id="imagePreview" class="img-preview" src="" alt="Neue Bildvorschau">
+                                        <p class="mb-2">New Image:</p>
+                                        <img id="imagePreview" class="img-preview" src="" alt="New Image Preview">
                                     </div>
                                     
                                     <!-- Fallback für den Server -->
@@ -122,26 +122,26 @@
                                     <div class="mt-2">
                                         <input type="file" class="form-control" id="thumbnail_file" name="thumbnail_file" accept="image/*" style="display: none;">
                                         <label for="thumbnail_file" class="custom-file-upload">
-                                            <i class="fas fa-cloud-upload-alt"></i> Neues Thumbnail auswählen
+                                            <i class="fas fa-cloud-upload-alt"></i> Select new thumbnail
                                         </label>
-                                        <span id="thumbnail-file-selected">Keine neue Datei ausgewählt</span>
+                                        <span id="thumbnail-file-selected">No new file selected</span>
                                     </div>
-                                    <small class="text-muted">Leer lassen, um das Hauptbild als Thumbnail zu verwenden</small>
+                                    <small class="text-muted">Leave empty to use the main image as thumbnail</small>
                                     
                                     <!-- Aktuelles Thumbnail anzeigen -->
                                     <div class="img-container">
-                                        <p class="mb-2">Aktuelles Thumbnail:</p>
+                                        <p class="mb-2">Current Thumbnail:</p>
                                         {% if gallery.thumbnail %}
-                                            <img id="currentThumbnailPreview" class="img-preview" src="{{ url_for('static', filename=gallery.thumbnail) }}" alt="Aktuelles Thumbnail">
+                                            <img id="currentThumbnailPreview" class="img-preview" src="{{ url_for('static', filename=gallery.thumbnail) }}" alt="Current Thumbnail">
                                         {% else %}
-                                            <p class="text-muted">Kein spezielles Thumbnail vorhanden</p>
+                                            <p class="text-muted">No special thumbnail available</p>
                                         {% endif %}
                                     </div>
                                     
                                     <!-- Neues Thumbnail Vorschau -->
                                     <div class="new-image-container" id="newThumbnailContainer">
-                                        <p class="mb-2">Neues Thumbnail:</p>
-                                        <img id="thumbnailPreview" class="img-preview" src="" alt="Neue Thumbnail-Vorschau">
+                                        <p class="mb-2">New Thumbnail:</p>
+                                        <img id="thumbnailPreview" class="img-preview" src="" alt="New Thumbnail Preview">
                                     </div>
                                     
                                     <!-- Fallback für den Server -->
@@ -153,7 +153,7 @@
                                 <div class="form-check mt-3">
                                     <input class="form-check-input" type="checkbox" id="is_active" name="is_active" {% if gallery.is_active %}checked{% endif %}>
                                     <label class="form-check-label" for="is_active">
-                                        Aktiv (wird auf der Website angezeigt)
+                                        Active (will be displayed on the website)
                                     </label>
                                 </div>
                             </div>
@@ -161,11 +161,11 @@
                         
                         <div class="form-group mt-4 d-flex justify-content-between">
                             <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">
-                                <i class="fas fa-trash"></i> Löschen
+                                <i class="fas fa-trash"></i> Delete
                             </button>
                             
                             <button type="submit" class="btn btn-success">
-                                <i class="fas fa-save"></i> Änderungen speichern
+                                <i class="fas fa-save"></i> Save Changes
                             </button>
                         </div>
                     </form>
@@ -180,16 +180,16 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="deleteModalLabel">Galerie-Eintrag löschen</h5>
+                <h5 class="modal-title" id="deleteModalLabel">Delete Gallery Entry</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                Sind Sie sicher, dass Sie den Galerie-Eintrag "{{ gallery.title }}" löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden.
+                Are you sure you want to delete the gallery entry "{{ gallery.title }}"? This action cannot be undone.
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Abbrechen</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                 <form action="{{ url_for('gallery_delete', id=gallery.id) }}" method="post">
-                    <button type="submit" class="btn btn-danger">Löschen</button>
+                    <button type="submit" class="btn btn-danger">Delete</button>
                 </form>
             </div>
         </div>
@@ -219,7 +219,7 @@
                 $('#image').val(newPath);
             } else {
                 $('#newImageContainer').hide();
-                $('#file-selected').text('Keine neue Datei ausgewählt');
+                $('#file-selected').text('No new file selected');
                 $('#image').val('{{ gallery.image }}');
             }
         });
@@ -243,7 +243,7 @@
                 $('#thumbnail').val(newPath);
             } else {
                 $('#newThumbnailContainer').hide();
-                $('#thumbnail-file-selected').text('Keine neue Datei ausgewählt');
+                $('#thumbnail-file-selected').text('No new file selected');
                 $('#thumbnail').val('{{ gallery.thumbnail or "" }}');
             }
         });

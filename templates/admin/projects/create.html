@@ -155,7 +155,6 @@
                                 <div class="form-group">
                                     <label for="title" class="form-label">Title <span class="text-danger">*</span></label>
                                     <input type="text" class="form-control" id="title" name="title" required value="fa-project-diagram">
-                                    <small class="text-muted">The title is used to automatically suggest a suitable icon.</small>
                                 </div>
                             </div>
                             
@@ -184,7 +183,7 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="category" class="form-label">Category <span class="text-danger">*</span></label>
-                                    <select class="form-select" id="category" name="category" required onchange="updateIconForCategory(this.value)">
+                                    <select class="form-select" id="category" name="category" required>
                                         <option value="" selected disabled>Please select...</option>
                                         <option value="bildung">Education</option>
                                         <option value="hilfe">Help</option>
@@ -199,10 +198,7 @@
                                         <option value="familie">Family</option>
                                         <option value="andere">Other</option>
                                     </select>
-                                    <div class="mt-2">
-                                        <small class="text-muted">When selecting a category, a suitable icon is automatically set.</small>
-                                    </div>
-                                    <div id="icon-preview" class="mt-2" style="font-size: 2.5rem; color: #9c27b0; text-align: center;">
+                                    <div id="icon-preview" class="mt-3" style="font-size: 2.5rem; color: #9c27b0; text-align: center;">
                                         <i class="fas fa-project-diagram"></i>
                                     </div>
                                     <!-- Hidden field for the actual icon -->
@@ -268,27 +264,55 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/spectrum/1.8.1/spectrum.min.js"></script>
 <script src="{{ url_for('static', filename='js/admin-forms.js') }}"></script>
 <script>
-    // Color selection function
-    function selectGradient(element, value) {
-        console.log("Gradient selected: " + value);
+    // Debug-Funktion
+    function logDebug(message) {
+        console.log('[DEBUG] ' + message);
+    }
+
+    // Diese Funktion sorgt dafür, dass das Icon sofort aktualisiert wird
+    function updateIconForCategory(category) {
+        console.log('Update Icon für Kategorie: ' + category);
         
-        // Remove selected class from all presets
-        var presets = document.querySelectorAll('.gradient-preset');
-        for (var i = 0; i < presets.length; i++) {
-            presets[i].classList.remove('selected');
+        // Mapping von Kategorien zu Icons
+        var iconMap = {
+            'bildung': 'fa-graduation-cap',
+            'hilfe': 'fa-hands-helping',
+            'spenden': 'fa-donate',
+            'feiern': 'fa-glass-cheers',
+            'natur': 'fa-leaf',
+            'gemeinschaft': 'fa-users',
+            'kultur': 'fa-theater-masks',
+            'sport': 'fa-running',
+            'technologie': 'fa-microchip',
+            'gesundheit': 'fa-heartbeat',
+            'familie': 'fa-home',
+            'andere': 'fa-project-diagram'
+        };
+        
+        // Icon basierend auf Kategorie setzen
+        var iconClass = 'fa-project-diagram'; // Standard-Icon
+        
+        if (category && iconMap[category]) {
+            iconClass = iconMap[category];
+            console.log('Icon gefunden: ' + iconClass);
         }
         
-        // Add selected class to clicked element
-        element.classList.add('selected');
+        // Icon-Vorschau aktualisieren
+        var iconPreview = document.getElementById('icon-preview');
+        if (iconPreview) {
+            iconPreview.innerHTML = '<i class="fas ' + iconClass + '"></i>';
+            console.log('Vorschau aktualisiert mit: ' + iconClass);
+        }
         
-        // Set value to input field
-        document.getElementById('color').value = value;
-        
-        // Update color preview
-        updateColorPreviewSimple(value);
+        // Wert im versteckten Feld aktualisieren (wird serverseitig überschrieben)
+        var iconField = document.getElementById('icon');
+        if (iconField) {
+            iconField.value = iconClass;
+            console.log('Hidden field aktualisiert mit: ' + iconClass);
+        }
     }
-    
-    // Simple preview function
+
+    // Farbvorschau-Funktionen
     function updateColorPreviewSimple(value) {
         var preview = document.getElementById('colorPreview');
         
@@ -308,16 +332,12 @@
             preview.style.background = value;
         }
     }
-    
-    // Debug function to log execution flow
-    function logDebug(message) {
-        console.log('[DEBUG] ' + message);
-    }
 
+    // Alles im Document Ready umschließen
     $(document).ready(function() {
-        logDebug('Document ready event triggered');
+        console.log('Document ready!');
         
-        // Initialize Summernote editor
+        // Summernote Editor initialisieren
         $('#details').summernote({
             height: 300,
             toolbar: [
@@ -331,197 +351,21 @@
             ]
         });
         
-        // Category-Icon mapping (with debug outputs)
-        logDebug('Initializing category-icon mapping...');
-        const categoryToIcon = {
-            'bildung': 'fa-graduation-cap',
-            'hilfe': 'fa-hands-helping',
-            'spenden': 'fa-donate',
-            'feiern': 'fa-glass-cheers',
-            'natur': 'fa-leaf',
-            'gemeinschaft': 'fa-users',
-            'kultur': 'fa-theater-masks',
-            'sport': 'fa-running',
-            'technologie': 'fa-microchip',
-            'gesundheit': 'fa-heartbeat',
-            'familie': 'fa-home',
-            'andere': 'fa-project-diagram'
-        };
-        logDebug('Category-icon map loaded: ' + JSON.stringify(categoryToIcon));
-        
-        // Update icon preview - robust version
-        function updateIconPreview(iconClass) {
-            logDebug('updateIconPreview called with: ' + iconClass);
-            try {
-                const iconPreview = document.getElementById('icon-preview');
-                if (iconPreview) {
-                    iconPreview.innerHTML = `<i class="fas ${iconClass}"></i>`;
-                    logDebug('Icon preview updated: ' + iconClass);
-                } else {
-                    console.error('Element icon-preview was not found!');
-                }
-            } catch (error) {
-                console.error('Error updating icon preview:', error);
-            }
-        }
-        
-        // Category to icon function - direct use
-        function setIconForCategory(category) {
-            logDebug('setIconForCategory called for: ' + category);
-            try {
-                const iconField = document.getElementById('icon');
-                
-                if (category && categoryToIcon[category]) {
-                    const iconClass = categoryToIcon[category];
-                    logDebug('Matching icon found: ' + iconClass);
-                    
-                    // Set the value directly
-                    if (iconField) {
-                        iconField.value = iconClass;
-                        logDebug('Icon field updated: ' + iconClass);
-                    } else {
-                        console.error('Icon field not found!');
-                    }
-                    
-                    // Update the preview
-                    updateIconPreview(iconClass);
-                } else {
-                    logDebug('No matching category found, setting default icon');
-                    if (iconField) {
-                        iconField.value = 'fa-project-diagram';
-                        logDebug('Default icon set: fa-project-diagram');
-                    }
-                    updateIconPreview('fa-project-diagram');
-                }
-            } catch (error) {
-                console.error('Error setting icon:', error);
-            }
-        }
-        
-        // Sofort den aktuellen Wert überprüfen und setzen
-        logDebug('Überprüfe aktuelle Kategorie-Auswahl');
-        try {
-            const categorySelect = document.getElementById('category');
-            if (categorySelect && categorySelect.value) {
-                const selectedCategory = categorySelect.value;
-                logDebug('Kategorie bereits ausgewählt: ' + selectedCategory);
-                setIconForCategory(selectedCategory);
-            } else {
-                logDebug('Keine Kategorie ausgewählt');
-            }
-        } catch (error) {
-            console.error('Fehler bei der initialen Kategorie-Prüfung:', error);
-        }
-        
-        // Traditioneller jQuery-Event-Listener
-        $('#category').on('change', function() {
-            const selectedCategory = $(this).val();
-            logDebug('Change-Event ausgelöst, Kategorie: ' + selectedCategory);
-            setIconForCategory(selectedCategory);
+        // WICHTIG: Den change-Event-Handler direkt binden
+        $('#category').change(function() {
+            console.log('Kategorie geändert zu: ' + this.value);
+            updateIconForCategory(this.value);
         });
         
-        // Verzögerte erneute Prüfung
-        setTimeout(function() {
-            logDebug('Verzögerte Kategorie-Prüfung ausgeführt');
-            try {
-                const categorySelect = document.getElementById('category');
-                if (categorySelect && categorySelect.value) {
-                    const selectedCategory = categorySelect.value;
-                    logDebug('Kategorie bei verzögerter Prüfung gefunden: ' + selectedCategory);
-                    setIconForCategory(selectedCategory);
-                } else {
-                    logDebug('Keine Kategorie bei verzögerter Prüfung gefunden');
-                }
-            } catch (error) {
-                console.error('Fehler bei der verzögerten Kategorie-Prüfung:', error);
-            }
-        }, 500);
-        
-        // Farbvorschau aktualisieren
-        function updateColorPreview(colorValue) {
-            console.log('Aktualisiere Farbvorschau mit: ' + colorValue);
-            try {
-                const colorPreview = document.getElementById('colorPreview');
-                if (colorPreview) {
-                    if (colorValue.includes('bg-gradient-to-r')) {
-                        // Für Tailwind-Gradienten
-                        const tailwindClasses = colorValue.split(' ');
-                        let fromColor = '#9c27b0'; // Standardwert
-                        let toColor = '#e74694';   // Standardwert
-                        
-                        // Tailwind-Farben zu CSS-Farben
-                        const tailwindToCSS = {
-                            'from-purple-600': '#9c38d1',
-                            'from-purple-500': '#a855f7',
-                            'from-green-500': '#10b981',
-                            'from-blue-500': '#3b82f6',
-                            'from-red-500': '#ef4444',
-                            'from-violet-500': '#8b5cf6',
-                            'to-pink-500': '#e74694',
-                            'to-teal-400': '#2dd4bf',
-                            'to-indigo-500': '#6366f1',
-                            'to-yellow-500': '#eab308',
-                            'to-blue-500': '#3b82f6',
-                            'to-pink-500': '#ec4899'
-                        };
-                        
-                        tailwindClasses.forEach(cls => {
-                            console.log('Verarbeite Tailwind-Klasse: ' + cls);
-                            if (cls.startsWith('from-') && tailwindToCSS[cls]) {
-                                fromColor = tailwindToCSS[cls];
-                                console.log('From-Color gefunden: ' + fromColor);
-                            } else if (cls.startsWith('to-') && tailwindToCSS[cls]) {
-                                toColor = tailwindToCSS[cls];
-                                console.log('To-Color gefunden: ' + toColor);
-                            }
-                        });
-                        
-                        console.log('Setze Gradient-Vorschau: ' + fromColor + ' bis ' + toColor);
-                        colorPreview.style.background = `linear-gradient(to right, ${fromColor}, ${toColor})`;
-                    } else if (colorValue.startsWith('#')) {
-                        // Für Hex-Farben
-                        console.log('Setze Hex-Farbe: ' + colorValue);
-                        colorPreview.style.background = colorValue;
-                    } else {
-                        // Für andere Formate
-                        console.log('Unbekanntes Farbformat, setze Standard');
-                        colorPreview.style.background = '#9c27b0';
-                    }
-                } else {
-                    console.error('colorPreview Element nicht gefunden!');
-                }
-            } catch (error) {
-                console.error('Fehler beim Aktualisieren der Farbvorschau:', error);
-            }
+        // Initiale Kategorie setzen
+        var initialCategory = $('#category').val();
+        console.log('Initiale Kategorie: ' + initialCategory);
+        if (initialCategory) {
+            updateIconForCategory(initialCategory);
         }
         
-        // Gradient-Presets definieren
-        const gradientPresets = [
-            { value: 'bg-gradient-to-r from-purple-600 to-pink-500', label: 'Lila zu Rosa' },
-            { value: 'bg-gradient-to-r from-green-500 to-teal-400', label: 'Grün zu Türkis' },
-            { value: 'bg-gradient-to-r from-blue-500 to-indigo-500', label: 'Blau zu Indigo' },
-            { value: 'bg-gradient-to-r from-red-500 to-yellow-500', label: 'Rot zu Gelb' },
-            { value: 'bg-gradient-to-r from-purple-500 to-pink-500', label: 'Lila zu Rosa (hell)' },
-            { value: 'bg-gradient-to-r from-violet-500 to-blue-500', label: 'Violett zu Blau' }
-        ];
-        
-        // Direkte Event-Bindung für statische Presets
-        $('.static-preset').on('click', function() {
-            const gradientValue = $(this).data('value');
-            logDebug('Statisches Gradient-Preset ausgewählt: ' + gradientValue);
-            
-            // Entferne selected-Klasse von allen anderen
-            $('.gradient-preset').removeClass('selected');
-            
-            // Füge selected-Klasse zu diesem Element hinzu
-            $(this).addClass('selected');
-            
-            // Setze den Wert in das Input-Feld
-            $('#color').val(gradientValue);
-            
-            // Aktualisiere die Vorschau
-            updateColorPreview(gradientValue);
-        });
+        // Auch den onchange-Handler des select-Elements entfernen und neu setzen
+        document.getElementById('category').removeAttribute('onchange');
         
         // Color Picker konfigurieren
         $('#colorPicker').spectrum({
@@ -536,92 +380,25 @@
             ],
             change: function(color) {
                 const hexColor = color.toHexString();
-                logDebug('Farbe im Picker geändert: ' + hexColor);
-                
-                // Setze den Hex-Wert in das Input-Feld
                 $('#color').val(hexColor);
-                
-                // Aktualisiere die Vorschau
                 updateColorPreview(hexColor);
             }
         });
         
-        // Initialer Farbwert
+        // Initialen Farbwert setzen
         const initialColor = $('#color').val();
         if (initialColor) {
-            logDebug('Initiale Farbe gefunden: ' + initialColor);
-            
             if (initialColor.startsWith('#')) {
-                // Wenn es ein Hex-Wert ist, setze ihn im Spectrum-Picker
                 $('#colorPicker').spectrum("set", initialColor);
-            } else {
-                // Wenn es ein Gradient ist, markiere das entsprechende Preset als ausgewählt
-                const preset = $(`.gradient-preset[data-value="${initialColor}"]`);
-                if (preset.length) {
-                    preset.addClass('selected');
-                } else {
-                    // Wenn das Preset nicht gefunden wurde, verwende das erste als Fallback
-                    $('.gradient-preset').first().addClass('selected');
-                    $('#color').val($('.gradient-preset').first().data('value'));
-                }
             }
-            
-            // Aktualisiere die Farbvorschau
             updateColorPreview(initialColor);
-        } else {
-            // Wenn kein Wert gesetzt ist, setze den ersten Gradient als Standard
-            $('.gradient-preset').first().addClass('selected');
-            $('#color').val($('.gradient-preset').first().data('value'));
-            updateColorPreview($('#color').val());
         }
         
         // Event-Handler für manuelle Änderungen am Farbfeld
         $('#color').on('input', function() {
             const colorValue = $(this).val();
-            logDebug('Farbe manuell geändert: ' + colorValue);
             updateColorPreview(colorValue);
         });
-    });
-
-    function updateIconForCategory(category) {
-        console.log('Kategorie ausgewählt: ' + category);
-        
-        // Kategorie-zu-Icon-Zuordnung
-        var iconMap = {
-            'bildung': 'fa-graduation-cap',
-            'hilfe': 'fa-hands-helping',
-            'spenden': 'fa-donate',
-            'feiern': 'fa-glass-cheers',
-            'natur': 'fa-leaf',
-            'gemeinschaft': 'fa-users',
-            'kultur': 'fa-theater-masks',
-            'sport': 'fa-running',
-            'technologie': 'fa-microchip',
-            'gesundheit': 'fa-heartbeat',
-            'familie': 'fa-home',
-            'andere': 'fa-project-diagram'
-        };
-        
-        // Icon-Klasse basierend auf der Kategorie setzen
-        var iconClass = iconMap[category] || 'fa-project-diagram';
-        console.log('Icon-Klasse gesetzt: ' + iconClass);
-        
-        // Icon im Vorschaubereich aktualisieren
-        document.getElementById('icon-preview').innerHTML = '<i class="fas ' + iconClass + '"></i>';
-        
-        // Wert im versteckten Feld aktualisieren
-        document.getElementById('icon').value = iconClass;
-        
-        // Debug-Ausgabe
-        console.log('Iconfeld wurde aktualisiert mit: ' + document.getElementById('icon').value);
-    }
-
-    // Bei Seitenladung sofort die Kategorie überprüfen und das richtige Icon setzen
-    document.addEventListener('DOMContentLoaded', function() {
-        var categorySelect = document.getElementById('category');
-        if (categorySelect && categorySelect.value && categorySelect.value !== "") {
-            updateIconForCategory(categorySelect.value);
-        }
     });
 </script>
 {% endblock %} 

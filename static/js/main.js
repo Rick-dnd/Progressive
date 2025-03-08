@@ -176,7 +176,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Projekte Navigation initialisieren
     console.log('Navigation initialisieren...');
     
-    // Projekte Navigation
+    // Projekte Navigation - jetzt deaktiviert, da wir ein Grid-Layout verwenden
     const prevProjectBtn = document.getElementById('prev-project');
     const nextProjectBtn = document.getElementById('next-project');
     const projectsContainer = document.getElementById('projects-container');
@@ -185,7 +185,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const nextPastProjectBtn = document.getElementById('next-past-project');
     const pastProjectsContainer = document.getElementById('past-projects-container');
     
-    console.log('DOM Elemente gefunden:', {
+    console.log('DOM Elemente gefunden (diese werden nicht mehr für das Karussell verwendet):', {
         prevProjectBtn: !!prevProjectBtn,
         nextProjectBtn: !!nextProjectBtn,
         projectsContainer: !!projectsContainer,
@@ -194,6 +194,8 @@ document.addEventListener('DOMContentLoaded', function() {
         pastProjectsContainer: !!pastProjectsContainer
     });
     
+    // Karussell-Navigation ist jetzt deaktiviert, da wir ein Grid-Layout verwenden
+    /*
     // Navigationen initialisieren
     if (prevProjectBtn && nextProjectBtn && projectsContainer) {
         console.log('Aktuelle Projekte Navigation wird initialisiert');
@@ -208,166 +210,12 @@ document.addEventListener('DOMContentLoaded', function() {
     } else {
         console.warn('Einige Elemente für Vergangene Projekte Navigation fehlen!');
     }
+    */
 });
 
-// Funktion für die Projekt-Navigation
+// Funktion für die Projekt-Navigation - nicht mehr verwendet, da wir ein Grid-Layout nutzen
+/* 
 function setupProjectNavigation(prevBtn, nextBtn, container) {
-    if (!prevBtn || !nextBtn || !container) return;
-    
-    const projectCards = container.querySelectorAll('.project-card');
-    if (projectCards.length === 0) return;
-    
-    let currentPage = 0;
-    let projectsPerView = 1;
-    
-    // Bestimme die Anzahl anzuzeigender Projekte basierend auf der Bildschirmbreite
-    function updateProjectsPerView() {
-        if (window.innerWidth >= 1024) { // lg
-            projectsPerView = 3;
-        } else if (window.innerWidth >= 768) { // md
-            projectsPerView = 2;
-        } else {
-            projectsPerView = 1; // sm
-        }
-    }
-    
-    // Initial festlegen
-    updateProjectsPerView();
-    
-    // Bei Größenänderung des Fensters aktualisieren
-    window.addEventListener('resize', () => {
-        updateProjectsPerView();
-        moveToPage(currentPage); // Aktuelle Seite neu berechnen und anzeigen
-    });
-    
-    const totalPages = Math.ceil(projectCards.length / projectsPerView) - 1;
-    
-    // Navigation-Buttons aktualisieren
-    const updateNavButtons = () => {
-        // Verstecke oder zeige Pfeil-Buttons basierend auf der aktuellen Seite
-        if (currentPage === 0) {
-            // Erste Seite - nur Vorwärts-Button anzeigen
-            prevBtn.style.opacity = '0';
-            prevBtn.style.pointerEvents = 'none';
-            nextBtn.style.opacity = '1';
-            nextBtn.style.pointerEvents = 'auto';
-        } else if (currentPage >= totalPages) {
-            // Letzte Seite - nur Rückwärts-Button anzeigen
-            prevBtn.style.opacity = '1';
-            prevBtn.style.pointerEvents = 'auto';
-            nextBtn.style.opacity = '0';
-            nextBtn.style.pointerEvents = 'none';
-        } else {
-            // Mittlere Seite - beide Buttons anzeigen
-            prevBtn.style.opacity = '1';
-            prevBtn.style.pointerEvents = 'auto';
-            nextBtn.style.opacity = '1';
-            nextBtn.style.pointerEvents = 'auto';
-        }
-    };
-    
-    // Indikator-Punkte generieren und aktualisieren
-    const updateIndicators = () => {
-        // Finde den richtigen Indikator-Container (unterschiedliche IDs für aktuelle/vergangene Projekte)
-        let indicatorContainerId;
-        if (container.id === 'projects-container') {
-            indicatorContainerId = 'project-indicators';
-        } else if (container.id === 'past-projects-container') {
-            indicatorContainerId = 'past-project-indicators';
-        } else {
-            console.warn('Unbekannter Container: ' + container.id);
-            return;
-        }
-        
-        // Finde das Indikator-Container-Element
-        const indicatorContainer = container.closest('.relative').querySelector('#' + indicatorContainerId);
-        if (!indicatorContainer) {
-            console.warn('Indikator-Container nicht gefunden: #' + indicatorContainerId);
-            return;
-        }
-        
-        // Leere den Container
-        indicatorContainer.innerHTML = '';
-        
-        // Berechne die Anzahl der Seiten
-        const pageCount = Math.max(1, Math.ceil(projectCards.length / projectsPerView));
-        
-        // Füge für jede Seite einen Indikator hinzu
-        for (let i = 0; i < pageCount; i++) {
-            const indicator = document.createElement('span');
-            indicator.classList.add('w-3', 'h-3', 'rounded-full', 'transition-all', 'duration-300');
-            
-            // Aktive Seite hervorheben
-            if (i === currentPage) {
-                indicator.classList.add('bg-primary', 'transform', 'scale-110');
-            } else {
-                indicator.classList.add('bg-gray-300');
-            }
-            
-            // Event-Listener für Klick auf den Indikator
-            indicator.addEventListener('click', () => {
-                moveToPage(i);
-            });
-            
-            // Hover-Effekt
-            indicator.style.cursor = 'pointer';
-            
-            // Zum Container hinzufügen
-            indicatorContainer.appendChild(indicator);
-        }
-        
-        console.log(`Indikatoren aktualisiert für ${indicatorContainerId}: ${pageCount} Seiten, aktuelle Seite: ${currentPage}`);
-    };
-    
-    // Projekte aktualisieren - vereinfachte Berechnung
-    const moveToPage = (page) => {
-        if (page < 0) page = 0;
-        if (page > totalPages) page = totalPages;
-        
-        // Aktuelle Seitennummer aktualisieren
-        currentPage = page;
-        
-        // Einfache fixe Berechnung für den Karussell-Offset
-        const cardWidth = projectCards[0].offsetWidth;
-        const gapWidth = 32; // Entspricht gap-8 (8 * 4px)
-        
-        // Berechne wieviele Karten wir verschieben müssen
-        const cardsToMove = currentPage * projectsPerView;
-        
-        // Berechne den Offset basierend auf der Kartenanzahl
-        // Verhindere Überscrolling, wenn nicht genug Karten übrig sind
-        const maxCardsToMove = Math.min(cardsToMove, projectCards.length - projectsPerView);
-        const offset = Math.max(0, maxCardsToMove * (cardWidth + gapWidth));
-        
-        // Container horizontal verschieben
-        container.style.transform = `translateX(-${offset}px)`;
-        
-        // Buttons und Indikatoren aktualisieren
-        updateNavButtons();
-        updateIndicators();
-        console.log(`Navigation zur Seite ${currentPage}/${totalPages}, Offset: ${offset}px, Karten: ${projectCards.length}`);
-    };
-    
-    // Initial setup
-    moveToPage(0);
-    
-    // Event Listener für Buttons mit Event Capture
-    prevBtn.addEventListener('click', function(event) {
-        console.log("Zurück-Button geklickt");
-        event.preventDefault();
-        if (currentPage > 0) {
-            moveToPage(currentPage - 1);
-        }
-    }, true);
-    
-    nextBtn.addEventListener('click', function(event) {
-        console.log("Weiter-Button geklickt");
-        event.preventDefault();
-        if (currentPage < totalPages) {
-            moveToPage(currentPage + 1);
-        }
-    }, true);
-    
-    // Initial die Navigationspfeile aktualisieren
-    updateNavButtons();
-} 
+    // Code auskommentiert, da wir jetzt ein Grid-Layout verwenden
+}
+*/ 
