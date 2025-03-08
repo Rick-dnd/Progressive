@@ -271,7 +271,9 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                Are you sure you want to delete the project "{{ project.title }}"? This action cannot be undone.
+                Are you sure you want to delete the project 
+                <span title="{{ project.title }}">"{{ project.title|truncate(40, true, '...') }}"</span>? 
+                This action cannot be undone.
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>

@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, url_for, request, jsonify, flash, session
+from flask import Flask, render_template, redirect, url_for, request, jsonify, flash, session, g, make_response
 from flask_login import LoginManager, login_user, logout_user, current_user, login_required
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime, date, timedelta
@@ -198,7 +198,7 @@ with app.app_context():
                 'title': 'Erfolgreicher Abschluss des Mentoring-Programms',
                 'content': 'Unser diesjähriges Mentoring-Programm wurde erfolgreich abgeschlossen. 15 Teilnehmerinnen haben das Programm durchlaufen und wertvolle Erfahrungen gesammelt. Die Abschlussveranstaltung fand im Kulturzentrum München statt.',
                 'date': datetime.now() - timedelta(days=10),
-                'image': 'img/news/mentoring.jpg',
+                'image': 'img/news/c079074a1858489bbda784035275db06_51579ab90620cb36fb8592b19cd4280f.jpg',
                 'is_featured': True,
                 'is_published': True
             },
@@ -206,7 +206,7 @@ with app.app_context():
                 'title': 'Neue Workshops im Herbst',
                 'content': 'Ab September starten wir mit neuen Workshop-Reihen zu den Themen "Digitale Kompetenz", "Finanzen für Frauen" und "Nachhaltigkeit im Alltag". Die Anmeldung ist ab sofort möglich.',
                 'date': datetime.now() - timedelta(days=5),
-                'image': 'img/news/workshop.jpg',
+                'image': 'img/news/27161cea4726474691cb0a9c55e766bd_vRj1qBcrHdFs1CwY-generated_image.jpg',
                 'is_featured': True,
                 'is_published': True
             }
@@ -231,16 +231,16 @@ with app.app_context():
             {
                 'title': 'Sommerfest 2023',
                 'description': 'Eindrücke von unserem jährlichen Sommerfest im Englischen Garten.',
-                'image': 'img/gallery/sommerfest.jpg',
-                'thumbnail': 'img/gallery/thumb_sommerfest.jpg',
+                'image': 'img/gallery/57516be4efef49b6abda73349cd5ffc4_wallpaperflare.com_wallpaper_1.jpg',
+                'thumbnail': 'img/gallery/57516be4efef49b6abda73349cd5ffc4_wallpaperflare.com_wallpaper_1.jpg',
                 'order': 1,
                 'is_active': True
             },
             {
                 'title': 'Workshop-Reihe "Starke Frauen"',
                 'description': 'Impressionen aus unserer Workshop-Reihe zum Thema Selbstbewusstsein und Führung.',
-                'image': 'img/gallery/workshop.jpg',
-                'thumbnail': 'img/gallery/thumb_workshop.jpg',
+                'image': 'img/gallery/624c37d04b0c45a7be09a3b42c3f9550_wallpaperflare.com_wallpaper_1.jpg',
+                'thumbnail': 'img/gallery/624c37d04b0c45a7be09a3b42c3f9550_wallpaperflare.com_wallpaper_1.jpg',
                 'order': 2,
                 'is_active': True
             }
@@ -303,6 +303,12 @@ def index():
 @app.route('/imprint')
 def imprint():
     return render_template('legal/imprint.html')
+
+# News-Detailansicht
+@app.route('/news/<int:id>')
+def news_detail(id):
+    news_item = News.query.get_or_404(id)
+    return render_template('news/detail.html', news_item=news_item)
 
 @app.route('/privacy')
 def privacy():
@@ -1062,6 +1068,39 @@ def reset_project_sequence():
         flash(f'Fehler beim Zurücksetzen der Sequenz: {str(e)}', 'danger')
     
     return redirect(url_for('project_index'))
+
+@app.before_request
+def handle_language():
+    """Verarbeitet die Spracheinstellungen des Benutzers."""
+    # Standard ist Englisch
+    g.lang = 'en'
+    
+    # Prüfe, ob ein Sprachparameter in der URL ist
+    lang = request.args.get('lang')
+    if lang in ['de', 'en']:
+        g.lang = lang
+        session['lang'] = lang
+    elif 'lang' in session:
+        g.lang = session.get('lang')
+    
+    # Pfad mit /de/ beginnt
+    if request.path.startswith('/de/'):
+        g.lang = 'de'
+        session['lang'] = 'de'
+
+@app.route('/robots.txt')
+def robots_txt():
+    """Generiert eine robots.txt Datei für SEO."""
+    content = """User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /api/
+
+Sitemap: https://www.elegantprogressiveladies.org/sitemap.xml
+"""
+    response = make_response(content)
+    response.headers["Content-Type"] = "text/plain"
+    return response
 
 if __name__ == '__main__':
     app.run(debug=True) 

@@ -12,11 +12,13 @@
             <!-- Desktop Navigation -->
             <div class="hidden md:flex items-center space-x-1">
                 <nav class="flex space-x-1 items-center bg-opacity-30 bg-black backdrop-blur-sm rounded-full px-3 py-1.5">
-                    <a href="#about" class="text-sm font-medium transition duration-200 hover:text-white px-4 py-1.5 rounded-full text-gray-200 hover:bg-white hover:bg-opacity-10">About</a>
-                    <a href="#projects" class="text-sm font-medium transition duration-200 hover:text-white px-4 py-1.5 rounded-full text-gray-200 hover:bg-white hover:bg-opacity-10">Projects</a>
-                    <a href="#news" class="text-sm font-medium transition duration-200 hover:text-white px-4 py-1.5 rounded-full text-gray-200 hover:bg-white hover:bg-opacity-10">News</a>
-                    <a href="#gallery" class="text-sm font-medium transition duration-200 hover:text-white px-4 py-1.5 rounded-full text-gray-200 hover:bg-white hover:bg-opacity-10">Gallery</a>
-                    <a href="#contact" class="text-sm font-medium transition duration-200 hover:text-white px-4 py-1.5 rounded-full text-gray-200 hover:bg-white hover:bg-opacity-10">Contact</a>
+                    <a href="{{ url_for('index') }}#about" class="text-sm font-medium transition duration-200 hover:text-white px-4 py-1.5 rounded-full text-gray-200 hover:bg-white hover:bg-opacity-10">About</a>
+                    <a href="{{ url_for('index') }}#projects" class="text-sm font-medium transition duration-200 hover:text-white px-4 py-1.5 rounded-full text-gray-200 hover:bg-white hover:bg-opacity-10">Projects</a>
+                    <a href="{{ url_for('index') }}#news" class="text-sm font-medium transition duration-200 hover:text-white px-4 py-1.5 rounded-full text-gray-200 hover:bg-white hover:bg-opacity-10">News</a>
+                    <a href="{{ url_for('index') }}#gallery" class="text-sm font-medium transition duration-200 hover:text-white px-4 py-1.5 rounded-full text-gray-200 hover:bg-white hover:bg-opacity-10">Gallery</a>
+                    <a href="{{ url_for('index') }}#contact" class="text-sm font-medium transition duration-200 hover:text-white px-4 py-1.5 rounded-full text-gray-200 hover:bg-white hover:bg-opacity-10">Contact</a>
+                    <a href="{{ url_for('imprint') }}" class="text-sm font-medium transition duration-200 hover:text-white px-4 py-1.5 rounded-full text-gray-200 hover:bg-white hover:bg-opacity-10">Imprint</a>
+                    <a href="{{ url_for('privacy') }}" class="text-sm font-medium transition duration-200 hover:text-white px-4 py-1.5 rounded-full text-gray-200 hover:bg-white hover:bg-opacity-10">Privacy</a>
                     
                     <div class="h-4 border-r border-gray-400 mx-2 opacity-30"></div>
                     
@@ -54,11 +56,13 @@
          class="md:hidden bg-gradient-to-r from-primary to-secondary shadow-lg absolute top-full left-0 right-0 overflow-hidden">
         <div class="container mx-auto px-4 py-4">
             <nav class="flex flex-col space-y-4">
-                <a href="#about" @click="mobileMenuOpen = false" class="text-sm font-medium text-gray-200 hover:text-white transition duration-200">About</a>
-                <a href="#projects" @click="mobileMenuOpen = false" class="text-sm font-medium text-gray-200 hover:text-white transition duration-200">Projects</a>
-                <a href="#news" @click="mobileMenuOpen = false" class="text-sm font-medium text-gray-200 hover:text-white transition duration-200">News</a>
-                <a href="#gallery" @click="mobileMenuOpen = false" class="text-sm font-medium text-gray-200 hover:text-white transition duration-200">Gallery</a>
-                <a href="#contact" @click="mobileMenuOpen = false" class="text-sm font-medium text-gray-200 hover:text-white transition duration-200">Contact</a>
+                <a href="{{ url_for('index') }}#about" @click="mobileMenuOpen = false" class="text-sm font-medium text-gray-200 hover:text-white transition duration-200">About</a>
+                <a href="{{ url_for('index') }}#projects" @click="mobileMenuOpen = false" class="text-sm font-medium text-gray-200 hover:text-white transition duration-200">Projects</a>
+                <a href="{{ url_for('index') }}#news" @click="mobileMenuOpen = false" class="text-sm font-medium text-gray-200 hover:text-white transition duration-200">News</a>
+                <a href="{{ url_for('index') }}#gallery" @click="mobileMenuOpen = false" class="text-sm font-medium text-gray-200 hover:text-white transition duration-200">Gallery</a>
+                <a href="{{ url_for('index') }}#contact" @click="mobileMenuOpen = false" class="text-sm font-medium text-gray-200 hover:text-white transition duration-200">Contact</a>
+                <a href="{{ url_for('imprint') }}" @click="mobileMenuOpen = false" class="text-sm font-medium text-gray-200 hover:text-white transition duration-200">Imprint</a>
+                <a href="{{ url_for('privacy') }}" @click="mobileMenuOpen = false" class="text-sm font-medium text-gray-200 hover:text-white transition duration-200">Privacy</a>
                 
                 <div class="border-t border-gray-700 pt-2 mt-2 flex justify-between items-center">
                     <span class="text-sm font-medium text-gray-200">EN</span>

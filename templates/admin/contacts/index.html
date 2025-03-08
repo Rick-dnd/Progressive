@@ -77,7 +77,10 @@
                                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                         </div>
                                                         <div class="modal-body">
-                                                            Sind Sie sicher, dass Sie die Kontaktanfrage von "{{ contact.name }}" löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden.
+                                                            Sind Sie sicher, dass Sie die Kontaktanfrage von 
+                                                            <span title="{{ contact.name }}">{{ contact.name|truncate(25, true, '...') }}</span> 
+                                                            (Betreff: <span title="{{ contact.subject }}">{{ contact.subject|truncate(25, true, '...') }}</span>) 
+                                                            löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden.
                                                         </div>
                                                         <div class="modal-footer">
                                                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Abbrechen</button>

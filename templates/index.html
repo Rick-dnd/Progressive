@@ -437,21 +437,19 @@
                 
                 <div class="p-6">
                     <div class="text-sm text-gray-500 mb-2">{{ news_item.date.strftime('%d.%m.%Y') if news_item.date else '' }}</div>
-                    <h3 class="text-xl font-bold mb-2">{{ news_item.title }}</h3>
+                    <h3 class="text-xl font-bold mb-2 overflow-hidden" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;">{{ news_item.title }}</h3>
                     
                     {% set content_text = news_item.content|striptags %}
                     {% set truncated_content = content_text|truncate(150) %}
                     
-                    <div class="text-gray-600 mb-4 line-clamp-3">{{ truncated_content }}</div>
+                    <div class="text-gray-600 mb-4 overflow-hidden" style="display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; max-height: 4.8rem;">{{ truncated_content }}</div>
                     
-                    {% if truncated_content|length < content_text|length %}
-                    <a href="#" class="text-primary hover:text-secondary transition-colors duration-200 inline-flex items-center">
+                    <a href="{{ url_for('news_detail', id=news_item.id) }}" class="text-primary hover:text-secondary transition-colors duration-200 inline-flex items-center">
                         <span class="mr-1">Weiterlesen</span>
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
                         </svg>
                     </a>
-                    {% endif %}
                 </div>
             </div>
             {% endfor %}

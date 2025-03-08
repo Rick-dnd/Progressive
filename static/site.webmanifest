@@ -1,0 +1,24 @@
+{
+    "name": "Elegant Progressive Ladies Club München e.V.",
+    "short_name": "Progressive Ladies",
+    "icons": [
+        {
+            "src": "/static/favicon-16x16.png",
+            "sizes": "16x16",
+            "type": "image/png"
+        },
+        {
+            "src": "/static/favicon-32x32.png",
+            "sizes": "32x32",
+            "type": "image/png"
+        },
+        {
+            "src": "/static/favicon.ico",
+            "sizes": "48x48",
+            "type": "image/x-icon"
+        }
+    ],
+    "theme_color": "#9c27b0",
+    "background_color": "#ffffff",
+    "display": "standalone"
+} 

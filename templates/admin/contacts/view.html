@@ -123,7 +123,10 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                Are you sure you want to delete the contact request from "{{ contact.name }}"? This action cannot be undone.
+                Are you sure you want to delete the contact request from 
+                <span title="{{ contact.name }}">{{ contact.name|truncate(25, true, '...') }}</span> 
+                (Subject: <span title="{{ contact.subject }}">{{ contact.subject|truncate(25, true, '...') }}</span>)? 
+                This action cannot be undone.
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
