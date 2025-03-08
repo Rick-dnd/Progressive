@@ -112,6 +112,54 @@
     .project-card:hover .flip-card {
         transform: translateY(-10px);
     }
+    
+    /* Hero-Überschrift mit leuchtendem Effekt */
+    .hero-title {
+        text-shadow: 0 0 10px rgba(255, 255, 255, 0.8), 
+                     0 0 20px rgba(255, 255, 255, 0.6), 
+                     0 0 30px rgba(255, 255, 255, 0.4), 
+                     0 0 40px rgba(156, 39, 176, 0.3), 
+                     0 0 70px rgba(156, 39, 176, 0.2), 
+                     0 0 80px rgba(156, 39, 176, 0.1);
+        animation: glow 2s ease-in-out infinite alternate;
+    }
+    
+    @keyframes glow {
+        from {
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.8), 
+                         0 0 20px rgba(255, 255, 255, 0.6), 
+                         0 0 30px rgba(255, 255, 255, 0.4), 
+                         0 0 40px rgba(156, 39, 176, 0.3), 
+                         0 0 70px rgba(156, 39, 176, 0.2), 
+                         0 0 80px rgba(156, 39, 176, 0.1);
+        }
+        to {
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.9), 
+                         0 0 25px rgba(255, 255, 255, 0.7), 
+                         0 0 35px rgba(255, 255, 255, 0.5), 
+                         0 0 45px rgba(156, 39, 176, 0.4), 
+                         0 0 75px rgba(156, 39, 176, 0.3), 
+                         0 0 85px rgba(156, 39, 176, 0.2);
+        }
+    }
+    
+    /* Kontaktdaten Hover-Animation */
+    .contact-info-item {
+        transition: all 0.3s ease;
+    }
+    
+    .contact-info-item:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    }
+    
+    .social-icon {
+        transition: all 0.3s ease;
+    }
+    
+    .social-icon:hover {
+        transform: scale(1.15);
+    }
 </style>
 {% endblock %}
 
@@ -176,57 +224,67 @@
             <div class="w-24 h-1 bg-primary mx-auto"></div>
         </div>
         
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-            <div class="reveal-left">
-                <h3 class="text-2xl font-bold mb-4">Unsere Mission</h3>
-                <p class="text-gray-700 mb-6">
-                    Der Elegant Progressive Ladies Club Munich e.V. ist eine Gemeinschaft von Frauen, die sich für soziale Gerechtigkeit, Bildung und Unterstützung in der Gesellschaft einsetzen. Wir fördern das gegenseitige Empowerment und setzen uns für positive Veränderungen ein.
-                </p>
-                <p class="text-gray-700 mb-6">
-                    Unsere Mitglieder kommen aus verschiedenen Bereichen und bringen unterschiedliche Erfahrungen und Fähigkeiten mit, die wir in unseren gemeinsamen Projekten einsetzen.
-                </p>
-                <div class="flex space-x-2 md:space-x-4">
-                    <a href="#projects" class="px-6 py-2 bg-primary text-white rounded-md text-sm font-medium hover:bg-white hover:text-primary hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 inline-block">
-                        Unsere Projekte
-                    </a>
-                    <a href="#contact" class="px-6 py-2 border border-primary text-primary rounded-md text-sm font-medium hover:bg-primary hover:text-white hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 inline-block">
-                        Kontakt
-                    </a>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+            <!-- Linke Spalte mit den vier Elementen und darunter der Mission -->
+            <div class="flex flex-col">
+                <!-- Die vier Elemente in einem 2x2 Grid -->
+                <div class="grid grid-cols-2 gap-6 mb-10 reveal-left">
+                    <div class="bg-white p-6 rounded-lg shadow-md flex flex-col items-center text-center hover-card project-3d-hover">
+                        <div class="w-16 h-16 bg-primary bg-opacity-10 rounded-full flex items-center justify-center mb-4">
+                            <i class="fas fa-hands-helping text-primary text-2xl icon-hover float-element"></i>
+                        </div>
+                        <h4 class="text-lg font-bold mb-2">Gemeinschaft</h4>
+                        <p class="text-gray-600 text-sm">Wir fördern eine unterstützende Gemeinschaft von Frauen.</p>
+                    </div>
+                    
+                    <div class="bg-white p-6 rounded-lg shadow-md flex flex-col items-center text-center hover-card project-3d-hover">
+                        <div class="w-16 h-16 bg-secondary bg-opacity-10 rounded-full flex items-center justify-center mb-4">
+                            <i class="fas fa-graduation-cap text-secondary text-2xl icon-hover float-element"></i>
+                        </div>
+                        <h4 class="text-lg font-bold mb-2">Bildung</h4>
+                        <p class="text-gray-600 text-sm">Wir setzen uns für Bildungsmöglichkeiten für alle ein.</p>
+                    </div>
+                    
+                    <div class="bg-white p-6 rounded-lg shadow-md flex flex-col items-center text-center hover-card project-3d-hover">
+                        <div class="w-16 h-16 bg-accent bg-opacity-10 rounded-full flex items-center justify-center mb-4">
+                            <i class="fas fa-seedling text-accent text-2xl icon-hover float-element"></i>
+                        </div>
+                        <h4 class="text-lg font-bold mb-2">Nachhaltigkeit</h4>
+                        <p class="text-gray-600 text-sm">Wir fördern nachhaltige Praktiken und Umweltbewusstsein.</p>
+                    </div>
+                    
+                    <div class="bg-white p-6 rounded-lg shadow-md flex flex-col items-center text-center hover-card project-3d-hover">
+                        <div class="w-16 h-16 bg-primary bg-opacity-10 rounded-full flex items-center justify-center mb-4">
+                            <i class="fas fa-heart text-primary text-2xl icon-hover float-element"></i>
+                        </div>
+                        <h4 class="text-lg font-bold mb-2">Diversität</h4>
+                        <p class="text-gray-600 text-sm">Wir schätzen und fördern Vielfalt und Inklusion.</p>
+                    </div>
+                </div>
+                
+                <!-- Unsere Mission darunter -->
+                <div class="mt-6 reveal-bottom">
+                    <h3 class="text-2xl font-bold mb-4">Unsere Mission</h3>
+                    <p class="text-gray-700 mb-6">
+                        Der Elegant Progressive Ladies Club Munich e.V. ist eine Gemeinschaft von Frauen, die sich für soziale Gerechtigkeit, Bildung und Unterstützung in der Gesellschaft einsetzen. Wir fördern das gegenseitige Empowerment und setzen uns für positive Veränderungen ein.
+                    </p>
+                    <p class="text-gray-700 mb-6">
+                        Unsere Mitglieder kommen aus verschiedenen Bereichen und bringen unterschiedliche Erfahrungen und Fähigkeiten mit, die wir in unseren gemeinsamen Projekten einsetzen.
+                    </p>
+                    <div class="flex space-x-2 md:space-x-4">
+                        <a href="#projects" class="px-6 py-2 bg-primary text-white rounded-md text-sm font-medium hover:bg-white hover:text-primary hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 inline-block">
+                            Unsere Projekte
+                        </a>
+                        <a href="#contact" class="px-6 py-2 border border-primary text-primary rounded-md text-sm font-medium hover:bg-primary hover:text-white hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 inline-block">
+                            Kontakt
+                        </a>
+                    </div>
                 </div>
             </div>
             
-            <div class="grid grid-cols-2 gap-6 reveal-right">
-                <div class="bg-white p-6 rounded-lg shadow-md flex flex-col items-center text-center hover-card project-3d-hover">
-                    <div class="w-16 h-16 bg-primary bg-opacity-10 rounded-full flex items-center justify-center mb-4">
-                        <i class="fas fa-hands-helping text-primary text-2xl icon-hover float-element"></i>
-                    </div>
-                    <h4 class="text-lg font-bold mb-2">Gemeinschaft</h4>
-                    <p class="text-gray-600 text-sm">Wir fördern eine unterstützende Gemeinschaft von Frauen.</p>
-                </div>
-                
-                <div class="bg-white p-6 rounded-lg shadow-md flex flex-col items-center text-center hover-card project-3d-hover">
-                    <div class="w-16 h-16 bg-secondary bg-opacity-10 rounded-full flex items-center justify-center mb-4">
-                        <i class="fas fa-graduation-cap text-secondary text-2xl icon-hover float-element"></i>
-                    </div>
-                    <h4 class="text-lg font-bold mb-2">Bildung</h4>
-                    <p class="text-gray-600 text-sm">Wir setzen uns für Bildungsmöglichkeiten für alle ein.</p>
-                </div>
-                
-                <div class="bg-white p-6 rounded-lg shadow-md flex flex-col items-center text-center hover-card project-3d-hover">
-                    <div class="w-16 h-16 bg-accent bg-opacity-10 rounded-full flex items-center justify-center mb-4">
-                        <i class="fas fa-seedling text-accent text-2xl icon-hover float-element"></i>
-                    </div>
-                    <h4 class="text-lg font-bold mb-2">Nachhaltigkeit</h4>
-                    <p class="text-gray-600 text-sm">Wir fördern nachhaltige Praktiken und Umweltbewusstsein.</p>
-                </div>
-                
-                <div class="bg-white p-6 rounded-lg shadow-md flex flex-col items-center text-center hover-card project-3d-hover">
-                    <div class="w-16 h-16 bg-primary bg-opacity-10 rounded-full flex items-center justify-center mb-4">
-                        <i class="fas fa-heart text-primary text-2xl icon-hover float-element"></i>
-                    </div>
-                    <h4 class="text-lg font-bold mb-2">Diversität</h4>
-                    <p class="text-gray-600 text-sm">Wir schätzen und fördern Vielfalt und Inklusion.</p>
-                </div>
+            <!-- Rechte Spalte für den Bildplatzhalter -->
+            <div class="bg-white rounded-lg overflow-hidden shadow-lg h-full flex items-center justify-center reveal-right hover-card project-3d-hover about-image-container" style="transform-style: preserve-3d; perspective: 1000px;">
+                <img src="{{ url_for('static', filename='img/about/vereinsbild.jpg') }}" alt="Vereinsbild" class="w-full h-full object-cover">
             </div>
         </div>
     </div>
@@ -523,11 +581,11 @@
         </div>
         
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-            <div class="bg-white rounded-lg shadow-lg p-8 reveal-left">
+            <div class="contact-form-container bg-white rounded-lg shadow-xl p-8 reveal-left hover-card">
                 <h3 class="text-2xl font-bold mb-6">Kontaktdaten</h3>
                 
                 <div class="space-y-6">
-                    <div class="flex items-start">
+                    <div class="flex items-start p-4 rounded-lg contact-info-item">
                         <div class="w-12 h-12 bg-primary bg-opacity-10 rounded-full flex items-center justify-center flex-shrink-0">
                             <i class="fas fa-map-marker-alt text-primary text-xl"></i>
                         </div>
@@ -537,7 +595,7 @@
                         </div>
                     </div>
                     
-                    <div class="flex items-start">
+                    <div class="flex items-start p-4 rounded-lg contact-info-item">
                         <div class="w-12 h-12 bg-primary bg-opacity-10 rounded-full flex items-center justify-center flex-shrink-0">
                             <i class="fas fa-phone-alt text-primary text-xl"></i>
                         </div>
@@ -547,7 +605,7 @@
                         </div>
                     </div>
                     
-                    <div class="flex items-start">
+                    <div class="flex items-start p-4 rounded-lg contact-info-item">
                         <div class="w-12 h-12 bg-primary bg-opacity-10 rounded-full flex items-center justify-center flex-shrink-0">
                             <i class="fas fa-envelope text-primary text-xl"></i>
                         </div>
@@ -561,16 +619,16 @@
                 <div class="mt-8">
                     <h4 class="text-lg font-medium mb-4">Folgen Sie uns</h4>
                     <div class="flex space-x-4">
-                        <a href="#" class="w-10 h-10 bg-primary bg-opacity-10 rounded-full flex items-center justify-center hover:bg-primary hover:text-white transition-colors duration-300 text-primary">
+                        <a href="#" class="social-icon w-10 h-10 bg-primary bg-opacity-10 rounded-full flex items-center justify-center hover:bg-primary hover:text-white transition-colors duration-300 text-primary">
                             <i class="fab fa-facebook-f"></i>
                         </a>
-                        <a href="#" class="w-10 h-10 bg-primary bg-opacity-10 rounded-full flex items-center justify-center hover:bg-primary hover:text-white transition-colors duration-300 text-primary">
+                        <a href="#" class="social-icon w-10 h-10 bg-primary bg-opacity-10 rounded-full flex items-center justify-center hover:bg-primary hover:text-white transition-colors duration-300 text-primary">
                             <i class="fab fa-instagram"></i>
                         </a>
-                        <a href="#" class="w-10 h-10 bg-primary bg-opacity-10 rounded-full flex items-center justify-center hover:bg-primary hover:text-white transition-colors duration-300 text-primary">
+                        <a href="#" class="social-icon w-10 h-10 bg-primary bg-opacity-10 rounded-full flex items-center justify-center hover:bg-primary hover:text-white transition-colors duration-300 text-primary">
                             <i class="fab fa-linkedin-in"></i>
                         </a>
-                        <a href="#" class="w-10 h-10 bg-primary bg-opacity-10 rounded-full flex items-center justify-center hover:bg-primary hover:text-white transition-colors duration-300 text-primary">
+                        <a href="#" class="social-icon w-10 h-10 bg-primary bg-opacity-10 rounded-full flex items-center justify-center hover:bg-primary hover:text-white transition-colors duration-300 text-primary">
                             <i class="fab fa-twitter"></i>
                         </a>
                     </div>

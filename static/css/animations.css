@@ -999,6 +999,19 @@
     opacity: 1;
 }
 
+/* Kombinierte Klasse für Elemente mit beiden Hover-Effekten */
+.hover-card.project-3d-hover:hover {
+    transform: translateY(-15px) scale(1.03) rotateX(10deg) rotateY(10deg);
+}
+
+/* Korrigiere die Perspektive für das About-Bild */
+#about .hover-card.project-3d-hover {
+    perspective: 1000px;
+    transform-style: preserve-3d;
+    transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
+    will-change: transform;
+}
+
 /* Gradient Hover-Effekt für Buttons */
 .gradient-hover {
     background-size: 200% 200%;
@@ -1052,4 +1065,87 @@
         transform: scale(0.95);
         opacity: 0.7;
     }
+}
+
+/* Spezifische Animation für das Vereinsbild */
+.about-image-container {
+    transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.about-image-container:hover {
+    transform: translateY(-15px) scale(1.05) rotateX(10deg) rotateY(10deg) !important;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25) !important;
+    z-index: 10;
+}
+
+.about-image-container img {
+    transition: all 0.5s ease;
+}
+
+.about-image-container:hover img {
+    transform: scale(1.05);
+}
+
+/* Klasse wird durch JavaScript hinzugefügt */
+.about-image-container.hover-active {
+    transform: translateY(-15px) scale(1.05) rotateX(10deg) rotateY(10deg) !important;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25) !important;
+    z-index: 10;
+}
+
+.about-image-container.hover-active img {
+    transform: scale(1.05);
+}
+
+/* Spezifische Stile für die Kontaktdaten-Elemente */
+.contact-info-item {
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    border: 1px solid transparent;
+    overflow: hidden;
+    background-color: rgba(255, 255, 255, 0.8);
+}
+
+.contact-info-item:hover {
+    transform: translateY(-8px) scale(1.02);
+    border-color: var(--primary-color);
+    box-shadow: 0 12px 24px rgba(156, 39, 176, 0.15);
+    background-color: white;
+    z-index: 10;
+}
+
+.contact-info-item:hover i {
+    transform: scale(1.2);
+    color: white;
+}
+
+.contact-info-item:hover .w-12 {
+    background-color: var(--primary-color);
+}
+
+.contact-info-item i {
+    transition: all 0.3s ease;
+}
+
+.contact-info-item .w-12 {
+    transition: all 0.3s ease;
+}
+
+/* Verbesserte Hover-Effekte für Kontaktdaten-Container */
+#contact .contact-form-container {
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    transform: translateY(0);
+}
+
+#contact .contact-form-container:hover {
+    transform: translateY(-15px);
+    box-shadow: 0 20px 40px rgba(156, 39, 176, 0.15);
+}
+
+/* Kontaktdaten-Icons mit subtiler Animation */
+.contact-info-item i {
+    transition: all 0.3s ease;
+}
+
+.contact-info-item:hover i {
+    transform: scale(1.2);
 } 

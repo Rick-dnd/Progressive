@@ -86,6 +86,32 @@ document.addEventListener('DOMContentLoaded', function() {
         element.textContent = currentYear;
     });
     
+    // Verbesserte Hover-Interaktion für das Vereinsbild
+    const aboutImageContainer = document.querySelector('.about-image-container');
+    if (aboutImageContainer) {
+        // Mouseenter-Event für Desktop
+        aboutImageContainer.addEventListener('mouseenter', function() {
+            this.classList.add('hover-active');
+        });
+        
+        // Mouseleave-Event für Desktop
+        aboutImageContainer.addEventListener('mouseleave', function() {
+            this.classList.remove('hover-active');
+        });
+        
+        // Touch-Events für mobile Geräte
+        aboutImageContainer.addEventListener('touchstart', function(e) {
+            e.preventDefault();
+            this.classList.add('hover-active');
+        });
+        
+        aboutImageContainer.addEventListener('touchend', function() {
+            setTimeout(() => {
+                this.classList.remove('hover-active');
+            }, 500);
+        });
+    }
+    
     // Projektfilter
     const filterButtons = document.querySelectorAll('.filter-btn');
     const projectItems = document.querySelectorAll('.project-card');
