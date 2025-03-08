@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+
+{% block title %}Privacy Policy - Elegant Progressive Ladies Club Munich e.V.{% endblock %}
+
+{% block content %}
+<!-- Datenschutz Header mit Hintergrundbild -->
+<section class="py-32 bg-gradient-to-r from-primary to-purple-800 text-white relative overflow-hidden">
+    <!-- Hintergrund-Elemente -->
+    <div class="absolute top-0 left-0 w-full h-full bg-pattern-dots opacity-10"></div>
+    
+    <!-- Floating Shapes für visuelles Interesse -->
+    <div class="absolute inset-0">
+        <div class="floating-shapes">
+            <div class="shape shape-3 opacity-20"></div>
+            <div class="shape shape-4 opacity-20"></div>
+        </div>
+    </div>
+    
+    <div class="container mx-auto px-4 md:px-6 relative z-10">
+        <h1 class="text-4xl md:text-5xl font-serif font-bold mb-6 text-center">Privacy Policy</h1>
+        <div class="w-24 h-1 bg-white mx-auto mb-8"></div>
+        <p class="text-xl text-center max-w-3xl mx-auto">Information about the protection of your personal data</p>
+    </div>
+</section>
+
+<!-- Datenschutz Inhalt -->
+<section class="py-16 bg-light">
+    <div class="container mx-auto px-4 md:px-6">
+        <div class="bg-white rounded-lg shadow-xl p-8 md:p-10 hover-card transform transition-all duration-300">
+            <!-- Einleitung -->
+            <div class="mb-12">
+                <h2 class="text-2xl font-bold mb-6 gradient-text">1. Privacy at a Glance</h2>
+                <div class="border-l-4 border-primary pl-6 py-2 mb-8">
+                    <p class="text-gray-600 italic">
+                        The protection of your personal data is important to us. This privacy policy informs you about how we handle your data and what rights you have.
+                    </p>
+                </div>
+            </div>
+                
+            <!-- Akkordeon für verschiedene Datenschutz-Abschnitte -->
+            <div x-data="{ activeTab: 'keine_daten' }" class="space-y-4">
+                <!-- Allgemeine Hinweise -->
+                <div class="border border-gray-200 rounded-lg overflow-hidden">
+                    <button 
+                        @click="activeTab = activeTab === 'allgemein' ? null : 'allgemein'" 
+                        class="w-full flex items-center justify-between px-6 py-4 bg-gray-50 hover:bg-gray-100 transition-colors duration-200"
+                    >
+                        <h3 class="text-lg font-bold">General Information</h3>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transform transition-transform duration-200" :class="activeTab === 'allgemein' ? 'rotate-180' : ''" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </button>
+                    <div x-show="activeTab === 'allgemein'" class="px-6 py-4">
+                        <p class="text-gray-600 mb-4">
+                            The following notes provide a simple overview of what happens to your personal data when you visit this website. Personal data is any data that can personally identify you.
+                        </p>
+                    </div>
+                </div>
+                
+                <!-- Keine Datenerfassung und Cookies -->
+                <div class="border border-gray-200 rounded-lg overflow-hidden mt-4">
+                    <button 
+                        @click="activeTab = activeTab === 'keine_daten' ? null : 'keine_daten'" 
+                        class="w-full flex items-center justify-between px-6 py-4 bg-gray-50 hover:bg-gray-100 transition-colors duration-200"
+                    >
+                        <h3 class="text-lg font-bold">No Data Collection and Cookies</h3>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transform transition-transform duration-200" :class="activeTab === 'keine_daten' ? 'rotate-180' : ''" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </button>
+                    <div x-show="activeTab === 'keine_daten'" class="px-6 py-4">
+                        <p class="text-gray-600 mb-4">
+                            <strong>We do not collect data from users of our website.</strong> No cookies are set on our website and no tracking takes place. We pay special attention to the protection of your privacy and only collect the data that you actively provide to us through the contact form.
+                        </p>
+                        <div class="mt-4 flex items-center bg-green-50 p-3 rounded-lg">
+                            <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                            <p class="text-sm text-green-700">We do not use cookies and do not conduct user analysis.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Kontaktformular -->
+            <div class="mt-12 pt-12 border-t border-gray-200">
+                <h2 class="text-2xl font-bold mb-6 gradient-text">2. Contact Form</h2>
+                <div class="bg-gray-50 rounded-lg p-6 mb-6">
+                    <p class="text-gray-600 mb-4">
+                        When you send us inquiries via the contact form, your details from the inquiry form, including the contact data you provided there, will be stored by us for the purpose of processing the inquiry and in the event of follow-up questions. We do not share this data without your consent.
+                    </p>
+                    <div class="mt-4 flex items-center">
+                        <i class="fas fa-shield-alt text-primary mr-2"></i>
+                        <p class="text-sm text-gray-500">Your data is transmitted encrypted and stored securely.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Kontakt-Button -->
+            <div class="mt-12 text-center">
+                <a href="{{ url_for('index') }}#contact" class="px-8 py-3 bg-primary text-white rounded-md font-medium hover:bg-white hover:text-primary hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 inline-block">
+                    Contact us with any questions
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %} 

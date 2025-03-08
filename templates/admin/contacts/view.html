@@ -1,0 +1,145 @@
+{% extends 'admin/base.html' %}
+
+{% block title %}Contact Request - Admin - Elegant Progressive Ladies Club Munich e.V.{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="d-flex align-items-center mb-4">
+                <a href="{{ url_for('contact_index') }}" class="btn btn-outline-secondary me-3">
+                    <i class="fas fa-arrow-left"></i>
+                </a>
+                <h1 class="admin-title mb-0">
+                    <i class="fas fa-envelope"></i> Contact Request
+                </h1>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="admin-card">
+                <div class="admin-card-header">
+                    <h2>Message</h2>
+                </div>
+                <div class="admin-card-body">
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <h5 class="text-muted mb-0">From:</h5>
+                            <p class="mb-2">{{ contact.name }}</p>
+                            
+                            <h5 class="text-muted mb-0">Email:</h5>
+                            <p class="mb-2">
+                                <a href="mailto:{{ contact.email }}">{{ contact.email }}</a>
+                            </p>
+                        </div>
+                        <div class="col-md-6">
+                            <h5 class="text-muted mb-0">Date:</h5>
+                            <p class="mb-2">{{ contact.created_at.strftime('%d.%m.%Y %H:%M') }}</p>
+                            
+                            <h5 class="text-muted mb-0">Newsletter:</h5>
+                            <p class="mb-2">
+                                {% if contact.newsletter %}
+                                    <span class="badge bg-success">Yes</span>
+                                {% else %}
+                                    <span class="badge bg-secondary">No</span>
+                                {% endif %}
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <h5 class="text-muted mb-0">Subject:</h5>
+                    <p class="mb-4 fs-5 fw-semibold">{{ contact.subject }}</p>
+                    
+                    <h5 class="text-muted mb-2">Message:</h5>
+                    <div class="p-3 bg-light rounded mb-4">
+                        <p class="mb-0 white-space-pre-wrap">{{ contact.message }}</p>
+                    </div>
+                    
+                    <div class="d-flex justify-content-between mt-4">
+                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">
+                            <i class="fas fa-trash"></i> Delete
+                        </button>
+                        
+                        <a href="mailto:{{ contact.email }}?subject=Re: {{ contact.subject }}" class="btn btn-primary">
+                            <i class="fas fa-reply"></i> Reply
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-4">
+            <div class="admin-card">
+                <div class="admin-card-header">
+                    <h2>Status</h2>
+                </div>
+                <div class="admin-card-body">
+                    <div class="mb-4">
+                        <h5 class="text-muted mb-2">Current Status:</h5>
+                        <div class="mb-3">
+                            {% if contact.status == 'neu' %}
+                                <span class="badge bg-danger fs-6 p-2">New</span>
+                            {% elif contact.status == 'in_bearbeitung' %}
+                                <span class="badge bg-warning fs-6 p-2">In Progress</span>
+                            {% else %}
+                                <span class="badge bg-success fs-6 p-2">Completed</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    <form action="{{ url_for('contact_update_status', id=contact.id) }}" method="post">
+                        <div class="mb-3">
+                            <label for="status" class="form-label">Change Status:</label>
+                            <select class="form-select" id="status" name="status">
+                                <option value="neu" {% if contact.status == 'neu' %}selected{% endif %}>New</option>
+                                <option value="in_bearbeitung" {% if contact.status == 'in_bearbeitung' %}selected{% endif %}>In Progress</option>
+                                <option value="abgeschlossen" {% if contact.status == 'abgeschlossen' %}selected{% endif %}>Completed</option>
+                            </select>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="notes" class="form-label">Internal Notes:</label>
+                            <textarea class="form-control" id="notes" name="notes" rows="5">{{ contact.notes }}</textarea>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-success w-100">
+                            <i class="fas fa-save"></i> Update Status
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Delete Contact Request</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete the contact request from "{{ contact.name }}"? This action cannot be undone.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <form action="{{ url_for('contact_delete', id=contact.id) }}" method="post">
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .white-space-pre-wrap {
+        white-space: pre-wrap;
+    }
+</style>
+{% endblock %} 

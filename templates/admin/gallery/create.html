@@ -1,0 +1,195 @@
+{% extends 'admin/base.html' %}
+
+{% block title %}New Gallery Image - Admin - Elegant Progressive Ladies Club Munich e.V.{% endblock %}
+
+{% block extra_css %}
+<style>
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+    
+    .img-preview {
+        max-width: 200px;
+        max-height: 200px;
+        border-radius: 4px;
+        margin-top: 10px;
+        display: none;
+        box-shadow: 0 0 5px rgba(0,0,0,0.2);
+    }
+    
+    .custom-file-upload {
+        display: inline-block;
+        padding: 0.375rem 0.75rem;
+        background-color: #f8f9fa;
+        border: 1px solid #ced4da;
+        border-radius: 0.25rem;
+        cursor: pointer;
+        margin-top: 10px;
+    }
+    
+    .custom-file-upload:hover {
+        background-color: #e9ecef;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="d-flex align-items-center mb-4">
+                <a href="{{ url_for('gallery_index') }}" class="btn btn-outline-secondary me-3">
+                    <i class="fas fa-arrow-left"></i>
+                </a>
+                <h1 class="admin-title mb-0">
+                    <i class="fas fa-plus-circle"></i> New Gallery Image
+                </h1>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="admin-card">
+                <div class="admin-card-header">
+                    <h2>Image Data</h2>
+                </div>
+                <div class="admin-card-body">
+                    <form action="{{ url_for('gallery_create') }}" method="post" enctype="multipart/form-data">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="title" class="form-label">Title <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" id="title" name="title" required>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="order" class="form-label">Order</label>
+                                    <input type="number" class="form-control" id="order" name="order" value="0">
+                                    <small class="text-muted">Images with lower values are displayed first</small>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="description" class="form-label">Description</label>
+                                    <textarea class="form-control" id="description" name="description" rows="3"></textarea>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="image_file" class="form-label">Main Image <span class="text-danger">*</span></label>
+                                    <div class="mt-2">
+                                        <input type="file" class="form-control" id="image_file" name="image_file" accept="image/*" required style="display: none;">
+                                        <label for="image_file" class="custom-file-upload">
+                                            <i class="fas fa-cloud-upload-alt"></i> Select Image
+                                        </label>
+                                        <span id="file-selected">No file selected</span>
+                                    </div>
+                                    <small class="text-muted">Recommended size: 1200 x 800 pixels, max. 2MB</small>
+                                    <div>
+                                        <img id="imagePreview" class="img-preview" src="" alt="Image preview">
+                                    </div>
+                                    
+                                    <!-- Fallback for the server -->
+                                    <input type="hidden" id="image" name="image" value="">
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="thumbnail_file" class="form-label">Thumbnail (optional)</label>
+                                    <div class="mt-2">
+                                        <input type="file" class="form-control" id="thumbnail_file" name="thumbnail_file" accept="image/*" style="display: none;">
+                                        <label for="thumbnail_file" class="custom-file-upload">
+                                            <i class="fas fa-cloud-upload-alt"></i> Select Thumbnail
+                                        </label>
+                                        <span id="thumbnail-file-selected">No file selected</span>
+                                    </div>
+                                    <small class="text-muted">Leave empty to use the main image as thumbnail</small>
+                                    <div>
+                                        <img id="thumbnailPreview" class="img-preview" src="" alt="Thumbnail preview">
+                                    </div>
+                                    
+                                    <!-- Fallback for the server -->
+                                    <input type="hidden" id="thumbnail" name="thumbnail" value="">
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-12">
+                                <div class="form-check mt-3">
+                                    <input class="form-check-input" type="checkbox" id="is_active" name="is_active" checked>
+                                    <label class="form-check-label" for="is_active">
+                                        Active (will be shown on the website)
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group mt-4 text-end">
+                            <button type="submit" class="btn btn-success">
+                                <i class="fas fa-save"></i> Save Gallery Entry
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    $(document).ready(function() {
+        // Image preview for main image
+        $('#image_file').change(function() {
+            const file = this.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    $('#imagePreview').attr('src', e.target.result).show();
+                    // Dateiname des ausgewählten Bildes anzeigen
+                    $('#file-selected').text(file.name);
+                }
+                reader.readAsDataURL(file);
+                
+                // Automatisch generierter Pfad für das Bild
+                const fileName = file.name;
+                const newPath = 'img/gallery/' + fileName;
+                $('#image').val(newPath);
+            } else {
+                $('#imagePreview').hide();
+                $('#file-selected').text('No file selected');
+                $('#image').val('');
+            }
+        });
+        
+        // Image preview for thumbnail
+        $('#thumbnail_file').change(function() {
+            const file = this.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    $('#thumbnailPreview').attr('src', e.target.result).show();
+                    // Dateiname des ausgewählten Bildes anzeigen
+                    $('#thumbnail-file-selected').text(file.name);
+                }
+                reader.readAsDataURL(file);
+                
+                // Automatisch generierter Pfad für das Thumbnail
+                const fileName = 'thumb_' + file.name;
+                const newPath = 'img/gallery/' + fileName;
+                $('#thumbnail').val(newPath);
+            } else {
+                $('#thumbnailPreview').hide();
+                $('#thumbnail-file-selected').text('No file selected');
+                $('#thumbnail').val('');
+            }
+        });
+    });
+</script>
+{% endblock %} 

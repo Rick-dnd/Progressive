@@ -1,0 +1,665 @@
+{% extends 'admin/base.html' %}
+
+{% block title %}Edit Project - Admin - Elegant Progressive Ladies Club Munich e.V.{% endblock %}
+
+{% block extra_css %}
+<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/spectrum/1.8.1/spectrum.min.css" rel="stylesheet">
+<style>
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+    
+    .color-preview {
+        display: inline-block;
+        width: 30px;
+        height: 30px;
+        border-radius: 5px;
+        margin-left: 10px;
+        vertical-align: middle;
+        border: 1px solid #ddd;
+    }
+    
+    .icon-picker {
+        display: grid;
+        grid-template-columns: repeat(8, 1fr);
+        gap: 10px;
+        margin-top: 10px;
+        max-height: 300px;
+        overflow-y: auto;
+        padding: 10px;
+        border: 1px solid #dee2e6;
+        border-radius: 5px;
+    }
+    
+    .icon-item {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 10px 5px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: all 0.2s;
+        text-align: center;
+    }
+    
+    .icon-item:hover {
+        background-color: #e9ecef;
+    }
+    
+    .icon-item.selected {
+        background-color: #9c27b0;
+        color: white;
+    }
+    
+    .icon-item i {
+        font-size: 20px;
+        display: block;
+        margin-bottom: 5px;
+    }
+    
+    .icon-item span {
+        font-size: 10px;
+        display: block;
+        word-break: break-all;
+    }
+    
+    .icon-search {
+        margin-bottom: 10px;
+    }
+    
+    .gradient-presets {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 10px;
+    }
+    
+    .gradient-preset {
+        width: 50px;
+        height: 30px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: all 0.2s;
+        border: 2px solid transparent;
+    }
+    
+    .gradient-preset:hover {
+        transform: scale(1.1);
+        box-shadow: 0 0 5px rgba(0,0,0,0.2);
+    }
+    
+    .gradient-preset.selected {
+        border: 2px solid #333;
+        box-shadow: 0 0 8px rgba(0,0,0,0.3);
+    }
+
+    #icon-preview {
+        font-size: 2rem;
+        margin-top: 10px;
+        color: #9c27b0;
+    }
+
+    .auto-icon-info {
+        color: #6c757d;
+        font-size: 0.875rem;
+        margin-top: 8px;
+    }
+    
+    /* Color Picker anpassungen */
+    .sp-replacer {
+        border-radius: 4px;
+        border: 1px solid #ced4da;
+        padding: 4px;
+        background: white;
+    }
+    
+    .sp-preview {
+        border-radius: 3px;
+        border: 1px solid #ddd;
+    }
+    
+    .sp-container {
+        border-radius: 5px;
+        border: 1px solid #ddd;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="d-flex align-items-center mb-4">
+                <a href="{{ url_for('project_index') }}" class="btn btn-outline-secondary me-3">
+                    <i class="fas fa-arrow-left"></i>
+                </a>
+                <h1 class="admin-title mb-0">
+                    <i class="fas fa-edit"></i> Projekt bearbeiten
+                </h1>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="admin-card">
+                <div class="admin-card-header">
+                    <h2>{{ project.title }}</h2>
+                </div>
+                <div class="admin-card-body">
+                    <form action="{{ url_for('project_edit', id=project.id) }}" method="post">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="title" class="form-label">Titel <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" id="title" name="title" value="{{ project.title }}" required>
+                                    <small class="text-muted">Der Titel wird verwendet, um automatisch ein passendes Icon vorzuschlagen.</small>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="start_date" class="form-label">Start-Datum <span class="text-danger">*</span></label>
+                                    <input type="date" class="form-control" id="start_date" name="start_date" value="{{ project.start_date.strftime('%Y-%m-%d') }}" required>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="description" class="form-label">Kurzbeschreibung <span class="text-danger">*</span></label>
+                                    <textarea class="form-control" id="description" name="description" rows="2" required>{{ project.description }}</textarea>
+                                    <small class="text-muted">Maximal 255 Zeichen für die Übersicht auf der Startseite.</small>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="details" class="form-label">Detaillierte Beschreibung</label>
+                                    <textarea class="form-control" id="details" name="details" rows="10">{{ project.details }}</textarea>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="category" class="form-label">Kategorie <span class="text-danger">*</span></label>
+                                    <select class="form-select" id="category" name="category" required onchange="updateIconForCategory(this.value)">
+                                        <option value="" disabled>Bitte wählen...</option>
+                                        <option value="bildung" {% if project.category == 'bildung' %}selected{% endif %}>Bildung</option>
+                                        <option value="hilfe" {% if project.category == 'hilfe' %}selected{% endif %}>Hilfe</option>
+                                        <option value="spenden" {% if project.category == 'spenden' %}selected{% endif %}>Geld (Spenden)</option>
+                                        <option value="feiern" {% if project.category == 'feiern' %}selected{% endif %}>Feiern (Partys)</option>
+                                        <option value="natur" {% if project.category == 'natur' %}selected{% endif %}>Natur</option>
+                                        <option value="gemeinschaft" {% if project.category == 'gemeinschaft' %}selected{% endif %}>Gemeinschaft</option>
+                                        <option value="kultur" {% if project.category == 'kultur' %}selected{% endif %}>Kultur & Kunst</option>
+                                        <option value="sport" {% if project.category == 'sport' %}selected{% endif %}>Sport</option>
+                                        <option value="technologie" {% if project.category == 'technologie' %}selected{% endif %}>Technologie</option>
+                                        <option value="gesundheit" {% if project.category == 'gesundheit' %}selected{% endif %}>Gesundheit</option>
+                                        <option value="familie" {% if project.category == 'familie' %}selected{% endif %}>Familie</option>
+                                        <option value="andere" {% if project.category == 'andere' or not project.category %}selected{% endif %}>Andere</option>
+                                    </select>
+                                    <div class="mt-2">
+                                        <small class="text-muted">Bei Auswahl einer Kategorie wird automatisch ein passendes Icon gesetzt.</small>
+                                    </div>
+                                    <div id="icon-preview" class="mt-2" style="font-size: 2.5rem; color: #9c27b0; text-align: center;">
+                                        <i class="fas {% if project.icon %}{{ project.icon }}{% else %}fa-project-diagram{% endif %}"></i>
+                                    </div>
+                                    <!-- Verstecktes Feld für das tatsächliche Icon -->
+                                    <input type="hidden" id="icon" name="icon" value="{% if project.icon %}{{ project.icon }}{% else %}fa-project-diagram{% endif %}">
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="color" class="form-label">Farbe/Gradient <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" id="color" name="color" value="{{ project.color }}" required>
+                                    <small class="text-muted d-block mb-2">Wählen Sie einen Farbverlauf aus den Vorlagen unten oder nutzen Sie den Farbwähler für eine individuelle Farbe.</small>
+                                    <div class="mt-2">
+                                        <button type="button" class="btn p-0" style="background: linear-gradient(to right, #9c38d1, #e74694); width: 50px; height: 30px; margin-right: 10px; border: 2px solid transparent; border-radius: 5px;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'" onclick="document.getElementById('color').value = 'bg-gradient-to-r from-purple-600 to-pink-500'; document.getElementById('colorPreview').style.background = 'linear-gradient(to right, #9c38d1, #e74694)'; highlightButton(this);"></button>
+                                        <button type="button" class="btn p-0" style="background: linear-gradient(to right, #10b981, #2dd4bf); width: 50px; height: 30px; margin-right: 10px; border: 2px solid transparent; border-radius: 5px;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'" onclick="document.getElementById('color').value = 'bg-gradient-to-r from-green-500 to-teal-400'; document.getElementById('colorPreview').style.background = 'linear-gradient(to right, #10b981, #2dd4bf)'; highlightButton(this);"></button>
+                                        <button type="button" class="btn p-0" style="background: linear-gradient(to right, #3b82f6, #6366f1); width: 50px; height: 30px; margin-right: 10px; border: 2px solid transparent; border-radius: 5px;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'" onclick="document.getElementById('color').value = 'bg-gradient-to-r from-blue-500 to-indigo-500'; document.getElementById('colorPreview').style.background = 'linear-gradient(to right, #3b82f6, #6366f1)'; highlightButton(this);"></button>
+                                        <button type="button" class="btn p-0" style="background: linear-gradient(to right, #ef4444, #eab308); width: 50px; height: 30px; margin-right: 10px; border: 2px solid transparent; border-radius: 5px;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'" onclick="document.getElementById('color').value = 'bg-gradient-to-r from-red-500 to-yellow-500'; document.getElementById('colorPreview').style.background = 'linear-gradient(to right, #ef4444, #eab308)'; highlightButton(this);"></button>
+                                        <button type="button" class="btn p-0" style="background: linear-gradient(to right, #a855f7, #ec4899); width: 50px; height: 30px; margin-right: 10px; border: 2px solid transparent; border-radius: 5px;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'" onclick="document.getElementById('color').value = 'bg-gradient-to-r from-purple-500 to-pink-500'; document.getElementById('colorPreview').style.background = 'linear-gradient(to right, #a855f7, #ec4899)'; highlightButton(this);"></button>
+                                        <button type="button" class="btn p-0" style="background: linear-gradient(to right, #8b5cf6, #3b82f6); width: 50px; height: 30px; margin-right: 10px; border: 2px solid transparent; border-radius: 5px;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'" onclick="document.getElementById('color').value = 'bg-gradient-to-r from-violet-500 to-blue-500'; document.getElementById('colorPreview').style.background = 'linear-gradient(to right, #8b5cf6, #3b82f6)'; highlightButton(this);"></button>
+                                    </div>
+                                    <div class="mt-3 d-flex align-items-center">
+                                        <label for="colorPicker" class="me-2">Eigene Farbe:</label>
+                                        <input type="text" id="colorPicker" class="d-inline-block">
+                                        <div id="colorPreview" class="color-preview ms-3"></div>
+                                        <small class="text-muted ms-2">Vorschau</small>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="position" class="form-label">Reihenfolge</label>
+                                    <input type="number" class="form-control" id="position" name="position" value="{{ project.position or 999 }}" min="1" max="9999">
+                                    <small class="text-muted">Projekte mit größeren Werten werden zuerst angezeigt. 3 wird vor 2 angezeigt, 2 vor 1, usw.</small>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <div class="form-check mt-3">
+                                    <input class="form-check-input" type="checkbox" id="is_current" name="is_current" {% if project.is_current %}checked{% endif %}>
+                                    <label class="form-check-label" for="is_current">
+                                        Aktuelles Projekt
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group mt-4 d-flex justify-content-between">
+                            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">
+                                <i class="fas fa-trash"></i> Löschen
+                            </button>
+                            
+                            <button type="submit" class="btn btn-success">
+                                <i class="fas fa-save"></i> Änderungen speichern
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Projekt löschen</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Sind Sie sicher, dass Sie das Projekt "{{ project.title }}" löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Abbrechen</button>
+                <form action="{{ url_for('project_delete', id=project.id) }}" method="post">
+                    <button type="submit" class="btn btn-danger">Löschen</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/spectrum/1.8.1/spectrum.min.js"></script>
+<script src="{{ url_for('static', filename='js/admin-forms.js') }}"></script>
+<script>
+    // Farbauswahl-Funktion
+    function selectGradient(element, value) {
+        console.log("Gradient ausgewählt: " + value);
+        
+        // Remove selected class from all presets
+        var presets = document.querySelectorAll('.gradient-preset');
+        for (var i = 0; i < presets.length; i++) {
+            presets[i].classList.remove('selected');
+        }
+        
+        // Add selected class to clicked element
+        element.classList.add('selected');
+        
+        // Set value to input field
+        document.getElementById('color').value = value;
+        
+        // Update color preview
+        updateColorPreviewSimple(value);
+    }
+    
+    // Einfache Vorschau-Funktion
+    function updateColorPreviewSimple(value) {
+        var preview = document.getElementById('colorPreview');
+        
+        if (value.includes('from-purple-600')) {
+            preview.style.background = 'linear-gradient(to right, #9c38d1, #e74694)';
+        } else if (value.includes('from-green-500')) {
+            preview.style.background = 'linear-gradient(to right, #10b981, #2dd4bf)';
+        } else if (value.includes('from-blue-500') && value.includes('to-indigo-500')) {
+            preview.style.background = 'linear-gradient(to right, #3b82f6, #6366f1)';
+        } else if (value.includes('from-red-500')) {
+            preview.style.background = 'linear-gradient(to right, #ef4444, #eab308)';
+        } else if (value.includes('from-purple-500')) {
+            preview.style.background = 'linear-gradient(to right, #a855f7, #ec4899)';
+        } else if (value.includes('from-violet-500')) {
+            preview.style.background = 'linear-gradient(to right, #8b5cf6, #3b82f6)';
+        } else if (value.startsWith('#')) {
+            preview.style.background = value;
+        }
+    }
+    
+    // Debug-Funktion, um den Ausführungsablauf zu protokollieren
+    function logDebug(message) {
+        console.log('[DEBUG] ' + message);
+    }
+
+    $(document).ready(function() {
+        logDebug('Document ready event ausgelöst');
+        
+        // Initialize Summernote editor
+        $('#details').summernote({
+            height: 300,
+            toolbar: [
+                ['style', ['style']],
+                ['font', ['bold', 'underline', 'clear']],
+                ['color', ['color']],
+                ['para', ['ul', 'ol', 'paragraph']],
+                ['table', ['table']],
+                ['insert', ['link', 'picture']],
+                ['view', ['fullscreen', 'codeview', 'help']]
+            ]
+        });
+        
+        // Kategorie-Icon Zuordnung (mit Debug-Ausgaben)
+        logDebug('Initialisiere Kategorie-Icon-Zuordnung...');
+        const categoryToIcon = {
+            'bildung': 'fa-graduation-cap',
+            'hilfe': 'fa-hands-helping',
+            'spenden': 'fa-donate',
+            'feiern': 'fa-glass-cheers',
+            'natur': 'fa-leaf',
+            'gemeinschaft': 'fa-users',
+            'kultur': 'fa-theater-masks',
+            'sport': 'fa-running',
+            'technologie': 'fa-microchip',
+            'gesundheit': 'fa-heartbeat',
+            'familie': 'fa-home',
+            'andere': $('#icon').val() // Bei "andere" behalten wir das aktuelle Icon bei
+        };
+        logDebug('Kategorie-Icon-Map geladen: ' + JSON.stringify(categoryToIcon));
+        
+        // Icon-Vorschau aktualisieren - robuste Version
+        function updateIconPreview(iconClass) {
+            logDebug('updateIconPreview aufgerufen mit: ' + iconClass);
+            try {
+                const iconPreview = document.getElementById('icon-preview');
+                if (iconPreview) {
+                    iconPreview.innerHTML = `<i class="fas ${iconClass}"></i>`;
+                    logDebug('Icon-Vorschau aktualisiert: ' + iconClass);
+                } else {
+                    console.error('Element icon-preview wurde nicht gefunden!');
+                }
+            } catch (error) {
+                console.error('Fehler bei der Aktualisierung der Icon-Vorschau:', error);
+            }
+        }
+        
+        // Kategorie zu Icon Funktion - direkte Benutzung
+        function setIconForCategory(category) {
+            logDebug('setIconForCategory aufgerufen für: ' + category);
+            try {
+                const iconField = document.getElementById('icon');
+                
+                if (category && categoryToIcon[category]) {
+                    const iconClass = categoryToIcon[category];
+                    logDebug('Passendes Icon gefunden: ' + iconClass);
+                    
+                    // Setze den Wert direkt
+                    if (iconField) {
+                        iconField.value = iconClass;
+                        logDebug('Icon-Feld aktualisiert: ' + iconClass);
+                    } else {
+                        console.error('Icon-Feld nicht gefunden!');
+                    }
+                    
+                    // Aktualisiere die Vorschau
+                    updateIconPreview(iconClass);
+                } else {
+                    logDebug('Keine passende Kategorie gefunden, setze Standard-Icon');
+                    if (iconField) {
+                        iconField.value = 'fa-project-diagram';
+                        logDebug('Standard-Icon gesetzt: fa-project-diagram');
+                    }
+                    updateIconPreview('fa-project-diagram');
+                }
+            } catch (error) {
+                console.error('Fehler beim Setzen des Icons:', error);
+            }
+        }
+        
+        // Sofort den aktuellen Wert überprüfen und setzen
+        logDebug('Überprüfe aktuelle Kategorie-Auswahl');
+        try {
+            const categorySelect = document.getElementById('category');
+            if (categorySelect && categorySelect.value) {
+                const selectedCategory = categorySelect.value;
+                logDebug('Kategorie bereits ausgewählt: ' + selectedCategory);
+                setIconForCategory(selectedCategory);
+            } else {
+                logDebug('Keine Kategorie ausgewählt');
+            }
+        } catch (error) {
+            console.error('Fehler bei der initialen Kategorie-Prüfung:', error);
+        }
+        
+        // Traditioneller jQuery-Event-Listener
+        $('#category').on('change', function() {
+            const selectedCategory = $(this).val();
+            logDebug('Change-Event ausgelöst, Kategorie: ' + selectedCategory);
+            setIconForCategory(selectedCategory);
+        });
+        
+        // Verzögerte erneute Prüfung
+        setTimeout(function() {
+            logDebug('Verzögerte Kategorie-Prüfung ausgeführt');
+            try {
+                const categorySelect = document.getElementById('category');
+                if (categorySelect && categorySelect.value) {
+                    const selectedCategory = categorySelect.value;
+                    logDebug('Kategorie bei verzögerter Prüfung gefunden: ' + selectedCategory);
+                    setIconForCategory(selectedCategory);
+                } else {
+                    logDebug('Keine Kategorie bei verzögerter Prüfung gefunden');
+                }
+            } catch (error) {
+                console.error('Fehler bei der verzögerten Kategorie-Prüfung:', error);
+            }
+        }, 500);
+        
+        // Farbvorschau aktualisieren
+        function updateColorPreview(colorValue) {
+            console.log('Aktualisiere Farbvorschau mit: ' + colorValue);
+            try {
+                const colorPreview = document.getElementById('colorPreview');
+                if (colorPreview) {
+                    if (colorValue.includes('bg-gradient-to-r')) {
+                        // Für Tailwind-Gradienten
+                        const tailwindClasses = colorValue.split(' ');
+                        let fromColor = '#9c27b0'; // Standardwert
+                        let toColor = '#e74694';   // Standardwert
+                        
+                        // Tailwind-Farben zu CSS-Farben
+                        const tailwindToCSS = {
+                            'from-purple-600': '#9c38d1',
+                            'from-purple-500': '#a855f7',
+                            'from-green-500': '#10b981',
+                            'from-blue-500': '#3b82f6',
+                            'from-red-500': '#ef4444',
+                            'from-violet-500': '#8b5cf6',
+                            'to-pink-500': '#e74694',
+                            'to-teal-400': '#2dd4bf',
+                            'to-indigo-500': '#6366f1',
+                            'to-yellow-500': '#eab308',
+                            'to-blue-500': '#3b82f6',
+                            'to-pink-500': '#ec4899'
+                        };
+                        
+                        tailwindClasses.forEach(cls => {
+                            console.log('Verarbeite Tailwind-Klasse: ' + cls);
+                            if (cls.startsWith('from-') && tailwindToCSS[cls]) {
+                                fromColor = tailwindToCSS[cls];
+                                console.log('From-Color gefunden: ' + fromColor);
+                            } else if (cls.startsWith('to-') && tailwindToCSS[cls]) {
+                                toColor = tailwindToCSS[cls];
+                                console.log('To-Color gefunden: ' + toColor);
+                            }
+                        });
+                        
+                        console.log('Setze Gradient-Vorschau: ' + fromColor + ' bis ' + toColor);
+                        colorPreview.style.background = `linear-gradient(to right, ${fromColor}, ${toColor})`;
+                    } else if (colorValue.startsWith('#')) {
+                        // Für Hex-Farben
+                        console.log('Setze Hex-Farbe: ' + colorValue);
+                        colorPreview.style.background = colorValue;
+                    } else {
+                        // Für andere Formate
+                        console.log('Unbekanntes Farbformat, setze Standard');
+                        colorPreview.style.background = '#9c27b0';
+                    }
+                } else {
+                    console.error('colorPreview Element nicht gefunden!');
+                }
+            } catch (error) {
+                console.error('Fehler beim Aktualisieren der Farbvorschau:', error);
+            }
+        }
+        
+        // Gradient-Presets definieren
+        const gradientPresets = [
+            { value: 'bg-gradient-to-r from-purple-600 to-pink-500', label: 'Lila zu Rosa' },
+            { value: 'bg-gradient-to-r from-green-500 to-teal-400', label: 'Grün zu Türkis' },
+            { value: 'bg-gradient-to-r from-blue-500 to-indigo-500', label: 'Blau zu Indigo' },
+            { value: 'bg-gradient-to-r from-red-500 to-yellow-500', label: 'Rot zu Gelb' },
+            { value: 'bg-gradient-to-r from-purple-500 to-pink-500', label: 'Lila zu Rosa (hell)' },
+            { value: 'bg-gradient-to-r from-violet-500 to-blue-500', label: 'Violett zu Blau' }
+        ];
+        
+        // Direkte Event-Bindung für statische Presets
+        $('.static-preset').on('click', function() {
+            const gradientValue = $(this).data('value');
+            logDebug('Statisches Gradient-Preset ausgewählt: ' + gradientValue);
+            
+            // Entferne selected-Klasse von allen anderen
+            $('.gradient-preset').removeClass('selected');
+            
+            // Füge selected-Klasse zu diesem Element hinzu
+            $(this).addClass('selected');
+            
+            // Setze den Wert in das Input-Feld
+            $('#color').val(gradientValue);
+            
+            // Aktualisiere die Vorschau
+            updateColorPreview(gradientValue);
+        });
+        
+        // Color Picker konfigurieren
+        $('#colorPicker').spectrum({
+            preferredFormat: "hex",
+            showInput: true,
+            showPalette: true,
+            showSelectionPalette: true,
+            palette: [
+                ["#9c27b0", "#e91e63", "#f44336", "#ff9800"],
+                ["#4caf50", "#8bc34a", "#cddc39", "#2196f3"],
+                ["#3f51b5", "#673ab7", "#00bcd4", "#009688"]
+            ],
+            change: function(color) {
+                const hexColor = color.toHexString();
+                logDebug('Farbe im Picker geändert: ' + hexColor);
+                
+                // Setze den Hex-Wert in das Input-Feld
+                $('#color').val(hexColor);
+                
+                // Aktualisiere die Vorschau
+                updateColorPreview(hexColor);
+            }
+        });
+        
+        // Initialer Farbwert
+        const initialColor = $('#color').val();
+        if (initialColor) {
+            logDebug('Initiale Farbe gefunden: ' + initialColor);
+            
+            if (initialColor.startsWith('#')) {
+                // Wenn es ein Hex-Wert ist, setze ihn im Spectrum-Picker
+                $('#colorPicker').spectrum("set", initialColor);
+            } else {
+                // Wenn es ein Gradient ist, markiere das entsprechende Preset als ausgewählt
+                const preset = $(`.gradient-preset[data-value="${initialColor}"]`);
+                if (preset.length) {
+                    preset.addClass('selected');
+                } else {
+                    // Wenn das Preset nicht gefunden wurde, verwende das erste als Fallback
+                    $('.gradient-preset').first().addClass('selected');
+                    $('#color').val($('.gradient-preset').first().data('value'));
+                }
+            }
+            
+            // Aktualisiere die Farbvorschau
+            updateColorPreview(initialColor);
+        } else {
+            // Wenn kein Wert gesetzt ist, setze den ersten Gradient als Standard
+            $('.gradient-preset').first().addClass('selected');
+            $('#color').val($('.gradient-preset').first().data('value'));
+            updateColorPreview($('#color').val());
+        }
+        
+        // Event-Handler für manuelle Änderungen am Farbfeld
+        $('#color').on('input', function() {
+            const colorValue = $(this).val();
+            logDebug('Farbe manuell geändert: ' + colorValue);
+            updateColorPreview(colorValue);
+        });
+
+        function highlightButton(button) {
+            // Alle Buttons zurücksetzen
+            var buttons = document.querySelectorAll('.btn.p-0');
+            for (var i = 0; i < buttons.length; i++) {
+                buttons[i].style.border = '2px solid transparent';
+                buttons[i].style.boxShadow = 'none';
+            }
+            
+            // Ausgewählten Button hervorheben
+            button.style.border = '2px solid #333';
+            button.style.boxShadow = '0 0 8px rgba(0,0,0,0.3)';
+        }
+
+        function updateIconForCategory(category) {
+            console.log('Kategorie ausgewählt: ' + category);
+            
+            // Kategorie-zu-Icon-Zuordnung
+            var iconMap = {
+                'bildung': 'fa-graduation-cap',
+                'hilfe': 'fa-hands-helping',
+                'spenden': 'fa-donate',
+                'feiern': 'fa-glass-cheers',
+                'natur': 'fa-leaf',
+                'gemeinschaft': 'fa-users',
+                'kultur': 'fa-theater-masks',
+                'sport': 'fa-running',
+                'technologie': 'fa-microchip',
+                'gesundheit': 'fa-heartbeat',
+                'familie': 'fa-home',
+                'andere': 'fa-project-diagram'
+            };
+            
+            // Icon-Klasse basierend auf der Kategorie setzen
+            var iconClass = iconMap[category] || 'fa-project-diagram';
+            console.log('Icon-Klasse gesetzt: ' + iconClass);
+            
+            // Icon im Vorschaubereich aktualisieren
+            document.getElementById('icon-preview').innerHTML = '<i class="fas ' + iconClass + '"></i>';
+            
+            // Wert im versteckten Feld aktualisieren
+            document.getElementById('icon').value = iconClass;
+            
+            // Debug-Ausgabe
+            console.log('Iconfeld wurde aktualisiert mit: ' + document.getElementById('icon').value);
+        }
+
+        // Bei Seitenladung sofort die Kategorie überprüfen und das richtige Icon setzen
+        document.addEventListener('DOMContentLoaded', function() {
+            var categorySelect = document.getElementById('category');
+            if (categorySelect && categorySelect.value) {
+                updateIconForCategory(categorySelect.value);
+            }
+        });
+    });
+</script>
+{% endblock %} 

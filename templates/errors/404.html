@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block title %}404 - Seite nicht gefunden - Elegant Progressive Ladies Club Munich e.V.{% endblock %}
+
+{% block content %}
+<!-- 404 Error Header -->
+<section class="py-32 bg-gradient-to-r from-primary to-purple-800 text-white relative overflow-hidden">
+    <!-- Hintergrund-Elemente -->
+    <div class="absolute top-0 left-0 w-full h-full bg-pattern-dots opacity-10"></div>
+    
+    <!-- Floating Shapes für visuelles Interesse -->
+    <div class="absolute inset-0">
+        <div class="floating-shapes">
+            <div class="shape shape-1 opacity-20"></div>
+            <div class="shape shape-4 opacity-20"></div>
+        </div>
+    </div>
+    
+    <div class="container mx-auto px-4 md:px-6 relative z-10">
+        <h1 class="text-4xl md:text-5xl font-serif font-bold mb-6 text-center">404 - Seite nicht gefunden</h1>
+        <div class="w-24 h-1 bg-white mx-auto mb-8"></div>
+        <p class="text-xl text-center max-w-3xl mx-auto">Die von Ihnen gesuchte Seite konnte leider nicht gefunden werden.</p>
+    </div>
+</section>
+
+<!-- Error Content -->
+<section class="py-16 bg-light">
+    <div class="container mx-auto px-4 md:px-6">
+        <div class="bg-white rounded-lg shadow-xl p-8 md:p-10 hover-card transform transition-all duration-300 max-w-3xl mx-auto text-center">
+            <div class="text-8xl font-bold text-primary mb-8">404</div>
+            
+            <h2 class="text-2xl font-bold mb-6">Diese Seite existiert nicht</h2>
+            
+            <p class="text-gray-600 mb-8">
+                Die von Ihnen angeforderte Seite wurde möglicherweise verschoben oder existiert nicht mehr.
+                Bitte überprüfen Sie die URL oder kehren Sie zur Startseite zurück.
+            </p>
+            
+            <a href="{{ url_for('index') }}" class="px-8 py-3 bg-primary text-white rounded-md font-medium hover:bg-white hover:text-primary hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 inline-block">
+                Zurück zur Startseite
+            </a>
+        </div>
+    </div>
+</section>
+{% endblock %} 

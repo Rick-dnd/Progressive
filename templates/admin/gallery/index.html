@@ -1,0 +1,106 @@
+{% extends 'admin/base.html' %}
+
+{% block title %}Gallery - Admin - Elegant Progressive Ladies Club Munich e.V.{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1 class="admin-title">
+                    <i class="fas fa-images"></i> Gallery
+                </h1>
+                <a href="{{ url_for('gallery_create') }}" class="btn btn-primary">
+                    <i class="fas fa-plus"></i> Add New Image
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="admin-card">
+                <div class="admin-card-header">
+                    <h2>Gallery Overview</h2>
+                </div>
+                <div class="admin-card-body">
+                    {% if gallery_items %}
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Preview</th>
+                                        <th>Title</th>
+                                        <th>Description</th>
+                                        <th>Order</th>
+                                        <th>Active</th>
+                                        <th width="150">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for gallery in gallery_items %}
+                                    <tr>
+                                        <td>{{ gallery.id }}</td>
+                                        <td>
+                                            {% if gallery.thumbnail %}
+                                                <img src="{{ url_for('static', filename=gallery.thumbnail) }}" alt="{{ gallery.title }}" style="width: 50px; height: 50px; object-fit: cover;">
+                                            {% else %}
+                                                <img src="{{ url_for('static', filename=gallery.image) }}" alt="{{ gallery.title }}" style="width: 50px; height: 50px; object-fit: cover;">
+                                            {% endif %}
+                                        </td>
+                                        <td>{{ gallery.title }}</td>
+                                        <td>{{ gallery.description|truncate(30) if gallery.description else '-' }}</td>
+                                        <td>{{ gallery.order }}</td>
+                                        <td>
+                                            {% if gallery.is_active %}
+                                                <span class="badge bg-success">Yes</span>
+                                            {% else %}
+                                                <span class="badge bg-secondary">No</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            <a href="{{ url_for('gallery_edit', id=gallery.id) }}" class="btn btn-sm btn-info">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                            <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal{{ gallery.id }}">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                            
+                                            <!-- Delete Modal -->
+                                            <div class="modal fade" id="deleteModal{{ gallery.id }}" tabindex="-1" aria-labelledby="deleteModalLabel{{ gallery.id }}" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="deleteModalLabel{{ gallery.id }}">Delete Gallery Entry</h5>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            Are you sure you want to delete the gallery entry "{{ gallery.title }}"? This action cannot be undone.
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                                            <form action="{{ url_for('gallery_delete', id=gallery.id) }}" method="post">
+                                                                <button type="submit" class="btn btn-danger">Delete</button>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <div class="alert alert-info">
+                            No gallery entries available. <a href="{{ url_for('gallery_create') }}">Add your first image now</a>.
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

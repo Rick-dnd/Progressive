@@ -1,0 +1,889 @@
+{% extends 'base.html' %}
+
+{% block extra_css %}
+<style>
+    /* Lightbox-Styles */
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+    
+    @keyframes fadeOut {
+        from { opacity: 1; }
+        to { opacity: 0; }
+    }
+    
+    .animate-fade-in {
+        animation: fadeIn 0.3s ease-in-out forwards;
+    }
+    
+    .animate-fade-out {
+        animation: fadeOut 0.3s ease-in-out forwards;
+    }
+    
+    #lightbox-image {
+        border-radius: 8px 8px 0 0;
+        max-height: 60vh;
+        object-fit: contain;
+        width: 100%;
+    }
+    
+    .lightbox-content {
+        transform: scale(0.95);
+        transition: transform 0.3s ease-in-out;
+        max-height: 90vh;
+        display: flex;
+        flex-direction: column;
+    }
+    
+    #lightbox:not(.hidden) .lightbox-content {
+        transform: scale(1);
+    }
+    
+    .lightbox-text-container {
+        max-height: 30vh;
+        overflow-y: auto;
+        scrollbar-width: thin;
+    }
+    
+    .lightbox-text-container::-webkit-scrollbar {
+        width: 6px;
+    }
+    
+    .lightbox-text-container::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 0 0 8px 0;
+    }
+    
+    .lightbox-text-container::-webkit-scrollbar-thumb {
+        background: #888;
+        border-radius: 3px;
+    }
+    
+    .lightbox-text-container::-webkit-scrollbar-thumb:hover {
+        background: #555;
+    }
+    
+    /* Navigation Buttons Hover-Effekt */
+    .lightbox-content button {
+        opacity: 0.8;
+        transition: all 0.2s ease-in-out;
+    }
+    
+    .lightbox-content button:hover {
+        opacity: 1;
+        transform: scale(1.1);
+    }
+
+    /* Karussell-Navigation Styles */
+    .project-slider {
+        position: relative;
+    }
+    
+    .nav-controls {
+        visibility: visible !important;
+    }
+    
+    .nav-arrow {
+        cursor: pointer;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+        border: 2px solid #f8f9fa;
+        z-index: 100;
+    }
+    
+    .nav-arrow:hover {
+        transform: scale(1.1);
+    }
+    
+    .nav-arrow:active {
+        transform: scale(0.95);
+    }
+    
+    #projects-container, #past-projects-container {
+        will-change: transform;
+        transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+    }
+    
+    .project-card {
+        transform: translateZ(0);
+    }
+    
+    /* Verbessere den Hover-Effekt für die Projektkarten */
+    .project-card:hover .flip-card {
+        transform: translateY(-10px);
+    }
+    
+    /* Hero-Überschrift mit leuchtendem Effekt */
+    .hero-title {
+        text-shadow: 0 0 10px rgba(255, 255, 255, 0.8), 
+                     0 0 20px rgba(255, 255, 255, 0.6), 
+                     0 0 30px rgba(255, 255, 255, 0.4), 
+                     0 0 40px rgba(156, 39, 176, 0.3), 
+                     0 0 70px rgba(156, 39, 176, 0.2), 
+                     0 0 80px rgba(156, 39, 176, 0.1);
+        animation: glow 2s ease-in-out infinite alternate;
+    }
+    
+    @keyframes glow {
+        from {
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.8), 
+                         0 0 20px rgba(255, 255, 255, 0.6), 
+                         0 0 30px rgba(255, 255, 255, 0.4), 
+                         0 0 40px rgba(156, 39, 176, 0.3), 
+                         0 0 70px rgba(156, 39, 176, 0.2), 
+                         0 0 80px rgba(156, 39, 176, 0.1);
+        }
+        to {
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.9), 
+                         0 0 25px rgba(255, 255, 255, 0.7), 
+                         0 0 35px rgba(255, 255, 255, 0.5), 
+                         0 0 45px rgba(156, 39, 176, 0.4), 
+                         0 0 75px rgba(156, 39, 176, 0.3), 
+                         0 0 85px rgba(156, 39, 176, 0.2);
+        }
+    }
+    
+    /* Kontaktdaten Hover-Animation */
+    .contact-info-item {
+        transition: all 0.3s ease;
+    }
+    
+    .contact-info-item:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    }
+    
+    .social-icon {
+        transition: all 0.3s ease;
+    }
+    
+    .social-icon:hover {
+        transform: scale(1.15);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section id="hero" class="min-h-screen flex items-center justify-center relative overflow-hidden">
+    <!-- Dynamischer Hintergrund mit Animation -->
+    <div class="absolute inset-0 bg-gradient-to-r from-primary via-secondary to-accent background-animate"></div>
+    
+    <!-- Animierte Partikel (Sternenhimmel) -->
+    <div class="absolute inset-0 particles-container" id="particles-js"></div>
+    
+    <!-- 3D-Effekt-Ebenen -->
+    <div class="absolute inset-0 perspective-container">
+        <div class="floating-shapes">
+            <div class="shape shape-1"></div>
+            <div class="shape shape-2"></div>
+            <div class="shape shape-3"></div>
+            <div class="shape shape-4"></div>
+            <div class="shape shape-5"></div>
+        </div>
+    </div>
+    
+    <!-- Leuchtende Linien -->
+    <div class="absolute inset-0 glow-lines">
+        <div class="line line1"></div>
+        <div class="line line2"></div>
+        <div class="line line3"></div>
+    </div>
+    
+    <!-- Hauptinhalt -->
+    <div class="container mx-auto px-4 md:px-6 text-center text-white relative z-10 hero-content">
+        <div class="glitch-wrapper">
+            <h1 class="text-5xl md:text-7xl font-serif font-bold mb-8 hero-title glitch-text" data-text="Elegant Progressive Ladies Club Munich">
+                Elegant Progressive Ladies Club Munich
+            </h1>
+        </div>
+        
+        <div class="hero-subtitle-wrapper relative">
+            <p class="text-xl md:text-2xl mb-12 max-w-3xl mx-auto hero-subtitle text-glow">
+                A community of committed women creating <span class="gradient-text">positive change</span> through social engagement.
+            </p>
+            <div class="typing-effect"></div>
+        </div>
+        
+        <!-- 3D-Button mit Hover-Effekt -->
+        <div class="cta-container perspective-3d mt-8">
+            <a href="#about" class="cta-button px-8 py-4 text-lg font-medium relative overflow-hidden inline-block">
+                <span class="cta-text">Learn more</span>
+                <span class="cta-shine"></span>
+                <span class="cta-shadow"></span>
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- About Section -->
+<section id="about" class="py-20 bg-light">
+    <div class="container mx-auto px-4 md:px-6">
+        <div class="text-center mb-16">
+            <h2 class="text-3xl md:text-4xl font-serif font-bold mb-4">About Us</h2>
+            <div class="w-24 h-1 bg-primary mx-auto"></div>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+            <!-- Linke Spalte mit den vier Elementen und darunter der Mission -->
+            <div class="flex flex-col">
+                <!-- Die vier Elemente in einem 2x2 Grid -->
+                <div class="grid grid-cols-2 gap-6 mb-10 reveal-left">
+                    <div class="bg-white p-6 rounded-lg shadow-md flex flex-col items-center text-center hover-card project-3d-hover">
+                        <div class="w-16 h-16 bg-primary bg-opacity-10 rounded-full flex items-center justify-center mb-4">
+                            <i class="fas fa-hands-helping text-primary text-2xl icon-hover float-element"></i>
+                        </div>
+                        <h4 class="text-lg font-bold mb-2">Community</h4>
+                        <p class="text-gray-600 text-sm">We promote a supportive community of women.</p>
+                    </div>
+                    
+                    <div class="bg-white p-6 rounded-lg shadow-md flex flex-col items-center text-center hover-card project-3d-hover">
+                        <div class="w-16 h-16 bg-secondary bg-opacity-10 rounded-full flex items-center justify-center mb-4">
+                            <i class="fas fa-graduation-cap text-secondary text-2xl icon-hover float-element"></i>
+                        </div>
+                        <h4 class="text-lg font-bold mb-2">Education</h4>
+                        <p class="text-gray-600 text-sm">We advocate for educational opportunities for all.</p>
+                    </div>
+                    
+                    <div class="bg-white p-6 rounded-lg shadow-md flex flex-col items-center text-center hover-card project-3d-hover">
+                        <div class="w-16 h-16 bg-accent bg-opacity-10 rounded-full flex items-center justify-center mb-4">
+                            <i class="fas fa-seedling text-accent text-2xl icon-hover float-element"></i>
+                        </div>
+                        <h4 class="text-lg font-bold mb-2">Sustainability</h4>
+                        <p class="text-gray-600 text-sm">We promote sustainable practices and environmental awareness.</p>
+                    </div>
+                    
+                    <div class="bg-white p-6 rounded-lg shadow-md flex flex-col items-center text-center hover-card project-3d-hover">
+                        <div class="w-16 h-16 bg-primary bg-opacity-10 rounded-full flex items-center justify-center mb-4">
+                            <i class="fas fa-heart text-primary text-2xl icon-hover float-element"></i>
+                        </div>
+                        <h4 class="text-lg font-bold mb-2">Diversity</h4>
+                        <p class="text-gray-600 text-sm">We value and promote diversity and inclusion.</p>
+                    </div>
+                </div>
+                
+                <!-- Unsere Mission darunter -->
+                <div class="mt-6 reveal-bottom">
+                    <h3 class="text-2xl font-bold mb-4">Our Mission</h3>
+                    <p class="text-gray-700 mb-6">
+                        The Elegant Progressive Ladies Club Munich e.V. is a community of women advocating for social justice, education, and support in society. We promote mutual empowerment and strive for positive change.
+                    </p>
+                    <p class="text-gray-700 mb-6">
+                        Our members come from various backgrounds and bring diverse experiences and skills that we apply in our collaborative projects.
+                    </p>
+                    <div class="flex space-x-2 md:space-x-4">
+                        <a href="#projects" class="px-6 py-2 bg-primary text-white rounded-md text-sm font-medium hover:bg-white hover:text-primary hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 inline-block">
+                            Our Projects
+                        </a>
+                        <a href="#contact" class="px-6 py-2 border border-primary text-primary rounded-md text-sm font-medium hover:bg-primary hover:text-white hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 inline-block">
+                            Contact
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Rechte Spalte für den Bildplatzhalter -->
+            <div class="bg-white rounded-lg overflow-hidden shadow-lg h-full flex items-center justify-center reveal-right hover-card project-3d-hover about-image-container" style="transform-style: preserve-3d; perspective: 1000px;">
+                <img src="{{ url_for('static', filename='img/about/vereinsbild.jpg') }}" alt="Club Photo" class="w-full h-full object-cover">
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Projects Section -->
+<section id="projects" class="py-20 bg-white">
+    <div class="container mx-auto px-4 md:px-6">
+        <div class="text-center mb-16">
+            <h2 class="text-3xl md:text-4xl font-serif font-bold mb-4">Our Projects</h2>
+            <div class="w-24 h-1 bg-primary mx-auto"></div>
+            <p class="text-gray-600 mt-4 max-w-2xl mx-auto">
+                Discover our current and past projects, with which we exert a positive influence on our community.
+            </p>
+        </div>
+        
+        <div class="mb-8 flex justify-center" x-data="{ activeTab: 'current' }">
+            <div class="inline-flex rounded-md shadow-sm" role="group">
+                <button @click="activeTab = 'current'" type="button" 
+                        :class="{'bg-primary text-white': activeTab === 'current', 'bg-white text-gray-800': activeTab !== 'current'}"
+                        class="px-6 py-2 text-sm font-medium rounded-l-lg border border-gray-200 hover:bg-gray-100 focus:z-10 focus:ring-2 focus:ring-primary transition duration-200">
+                    Current Projects
+                </button>
+                <button type="button"
+                        class="px-6 py-2 text-sm font-medium rounded-r-lg border border-gray-200 bg-gray-100 text-gray-400 cursor-not-allowed">
+                    Past Projects
+                </button>
+            </div>
+        </div>
+        
+        <div x-data="{ activeTab: 'current' }">
+            <!-- Current Projects -->
+            <div x-show="activeTab === 'current'" class="relative project-slider">
+                <!-- Navigationspfeile - immer sichtbar -->
+                <div class="absolute -left-12 md:-left-16 top-1/2 transform -translate-y-1/2 z-50 md:block hidden nav-controls">
+                    <button id="prev-project" type="button" class="nav-arrow prev-arrow w-12 h-12 rounded-full bg-white shadow-lg text-primary hover:bg-primary hover:text-white transition-all duration-300 flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-primary">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                </div>
+                <div class="absolute -right-12 md:-right-16 top-1/2 transform -translate-y-1/2 z-50 md:block hidden nav-controls">
+                    <button id="next-project" type="button" class="nav-arrow next-arrow w-12 h-12 rounded-full bg-white shadow-lg text-primary hover:bg-primary hover:text-white transition-all duration-300 flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-primary">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+                
+                <!-- Container mit Platz an den Seiten für die Navigation -->
+                <div class="px-4 md:px-12">
+                    <!-- Projekt-Karten -->
+                    <div class="relative overflow-visible mx-auto max-w-7xl py-4">
+                        <div id="projects-container" class="flex transition-transform duration-300 gap-8 px-4">
+                            {% for project in projects %}
+                                {% if project.is_current %}
+                                    <div class="project-card flex-shrink-0 w-full md:w-1/2 lg:w-1/3 px-2 py-4">
+                                        <div class="h-full">
+                                            {% with project=project %}
+                                                {% include 'components/project_card.html' %}
+                                            {% endwith %}
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Navigations-Indikatoren - dynamisch basierend auf Projektanzahl -->
+                <div class="flex justify-center mt-8 space-x-2" id="project-indicators">
+                    <!-- Indikatoren werden dynamisch per JavaScript generiert -->
+                </div>
+            </div>
+            
+            <!-- Past Projects -->
+            <div x-show="activeTab === 'past'" class="relative project-slider">
+                <!-- Navigationspfeile - immer sichtbar -->
+                <div class="absolute -left-12 md:-left-16 top-1/2 transform -translate-y-1/2 z-50 md:block hidden nav-controls">
+                    <button id="prev-past-project" type="button" class="nav-arrow prev-arrow w-12 h-12 rounded-full bg-white shadow-lg text-primary hover:bg-primary hover:text-white transition-all duration-300 flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-primary">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                </div>
+                <div class="absolute -right-12 md:-right-16 top-1/2 transform -translate-y-1/2 z-50 md:block hidden nav-controls">
+                    <button id="next-past-project" type="button" class="nav-arrow next-arrow w-12 h-12 rounded-full bg-white shadow-lg text-primary hover:bg-primary hover:text-white transition-all duration-300 flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-primary">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+                
+                <!-- Container mit Platz an den Seiten für die Navigation -->
+                <div class="px-4 md:px-12">
+                    <!-- Projekt-Karten -->
+                    <div class="relative overflow-visible mx-auto max-w-7xl py-4">
+                        <div id="past-projects-container" class="flex transition-transform duration-300 gap-8 px-4">
+                            {% for project in projects %}
+                                {% if not project.is_current %}
+                                    <div class="project-card flex-shrink-0 w-full md:w-1/2 lg:w-1/3 px-2 py-4">
+                                        <div class="h-full">
+                                            {% with project=project %}
+                                                {% include 'components/project_card.html' %}
+                                            {% endwith %}
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Navigations-Indikatoren - dynamisch basierend auf Projektanzahl -->
+                <div class="flex justify-center mt-8 space-x-2" id="past-project-indicators">
+                    <!-- Indikatoren werden dynamisch per JavaScript generiert -->
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Statistics Section -->
+<section class="py-16 bg-primary text-white">
+    <div class="container mx-auto px-4 md:px-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 text-center">
+            <div class="stat-item reveal-bottom">
+                <div class="text-4xl md:text-5xl font-bold mb-2" x-data="{ count: 0 }" x-init="
+                    $el.intersectionObserver = new IntersectionObserver((entries) => { 
+                        if (entries[0].isIntersecting) { 
+                            let start = 0;
+                            const end = 5;
+                            const duration = 2000;
+                            const step = end / (duration / 16);
+                            const counter = setInterval(() => {
+                                start += step;
+                                if (start > end) {
+                                    start = end;
+                                    clearInterval(counter);
+                                }
+                                count = Math.floor(start);
+                            }, 16);
+                            $el.intersectionObserver.disconnect();
+                        }
+                    });
+                    $el.intersectionObserver.observe($el);">
+                    <span x-text="count">0</span>
+                </div>
+                <p class="text-lg">Members</p>
+            </div>
+            
+            <div class="stat-item reveal-bottom" x-data="{ revealed: false }">
+                <div class="text-4xl md:text-5xl font-bold mb-2" x-data="{ count: 0 }" x-init="
+                    $el.intersectionObserver = new IntersectionObserver((entries) => { 
+                        if (entries[0].isIntersecting) { 
+                            let start = 0;
+                            const end = 5;
+                            const duration = 2000;
+                            const step = end / (duration / 16);
+                            const counter = setInterval(() => {
+                                start += step;
+                                if (start > end) {
+                                    start = end;
+                                    clearInterval(counter);
+                                }
+                                count = Math.floor(start);
+                            }, 16);
+                            $el.intersectionObserver.disconnect();
+                        }
+                    });
+                    $el.intersectionObserver.observe($el);">
+                    <span x-text="count">0</span>
+                </div>
+                <p class="text-lg">Projects</p>
+            </div>
+            
+            <div class="stat-item reveal-bottom" x-data="{ revealed: false }">
+                <div class="text-4xl md:text-5xl font-bold mb-2" x-data="{ count: 0 }" x-init="
+                    $el.intersectionObserver = new IntersectionObserver((entries) => { 
+                        if (entries[0].isIntersecting) { 
+                            let start = 0;
+                            const end = 10;
+                            const duration = 2000;
+                            const step = end / (duration / 16);
+                            const counter = setInterval(() => {
+                                start += step;
+                                if (start > end) {
+                                    start = end;
+                                    clearInterval(counter);
+                                }
+                                count = Math.floor(start);
+                            }, 16);
+                            $el.intersectionObserver.disconnect();
+                        }
+                    });
+                    $el.intersectionObserver.observe($el);">
+                    <span x-text="count">0</span><span>+</span>
+                </div>
+                <p class="text-lg">Years active</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- News Section -->
+<section id="news" class="py-20 bg-light">
+    <div class="container mx-auto px-4 md:px-6">
+        <div class="text-center mb-16">
+            <h2 class="text-3xl md:text-4xl font-serif font-bold mb-4">News & Updates</h2>
+            <div class="w-24 h-1 bg-primary mx-auto"></div>
+            <p class="text-gray-600 mt-4 max-w-2xl mx-auto">
+                Stay informed about our current activities, events, and successes.
+            </p>
+        </div>
+        
+        <div id="news-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 reveal-bottom">
+            {% for news_item in news_items %}
+            <div class="bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
+                {% if news_item.image %}
+                <div class="h-52 overflow-hidden">
+                    <img src="{{ url_for('static', filename=news_item.image) }}" alt="{{ news_item.title }}" class="w-full h-full object-cover transform hover:scale-105 transition-transform duration-300">
+                </div>
+                {% else %}
+                <div class="h-52 bg-gradient-to-r from-primary to-secondary flex items-center justify-center">
+                    <i class="fas fa-newspaper text-white text-5xl"></i>
+                </div>
+                {% endif %}
+                
+                <div class="p-6">
+                    <div class="text-sm text-gray-500 mb-2">{{ news_item.date.strftime('%d.%m.%Y') if news_item.date else '' }}</div>
+                    <h3 class="text-xl font-bold mb-2">{{ news_item.title }}</h3>
+                    
+                    {% set content_text = news_item.content|striptags %}
+                    {% set truncated_content = content_text|truncate(150) %}
+                    
+                    <div class="text-gray-600 mb-4 line-clamp-3">{{ truncated_content }}</div>
+                    
+                    {% if truncated_content|length < content_text|length %}
+                    <a href="#" class="text-primary hover:text-secondary transition-colors duration-200 inline-flex items-center">
+                        <span class="mr-1">Weiterlesen</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                        </svg>
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        
+        <div class="text-center mt-12">
+            {% if has_more_news %}
+            <button id="load-more-news" data-current-page="{{ current_page }}" class="px-8 py-3 border border-primary text-primary rounded-md text-lg font-medium hover:bg-primary hover:text-white transition duration-300 inline-block">
+                More News
+            </button>
+            {% endif %}
+            <button id="collapse-news" class="px-8 py-3 border border-primary text-primary rounded-md text-lg font-medium hover:bg-primary hover:text-white transition duration-300 inline-block ml-4" style="display: none;">
+                Collapse News
+            </button>
+        </div>
+    </div>
+</section>
+
+<!-- Gallery Section -->
+<section id="gallery" class="py-20 bg-white">
+    <div class="container mx-auto px-4 md:px-6">
+        <div class="text-center mb-16">
+            <h2 class="text-3xl md:text-4xl font-serif font-bold mb-4">Gallery</h2>
+            <div class="w-24 h-1 bg-primary mx-auto"></div>
+            <p class="text-gray-600 mt-4 max-w-2xl mx-auto">
+                Impressions from our events, projects, and activities.
+            </p>
+        </div>
+        
+        <div class="gallery-grid grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 reveal-bottom">
+            {% for item in gallery_items %}
+            <div class="gallery-item overflow-hidden rounded-lg shadow-md relative group cursor-pointer"
+                 data-image="{{ url_for('static', filename=item.image) }}"
+                 data-title="{{ item.title }}"
+                 data-description="{{ item.description }}"
+                 onclick="openLightbox(this)">
+                <img src="{{ url_for('static', filename=item.image) }}" alt="{{ item.title }}" 
+                     class="w-full h-64 object-cover transform group-hover:scale-110 transition-transform duration-500">
+                <div class="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-0 group-hover:opacity-80 transition-opacity duration-300 flex items-end p-4">
+                    <h3 class="text-white font-bold">{{ item.title }}</h3>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Contact Section -->
+<section id="contact" class="py-20 bg-light">
+    <div class="container mx-auto px-4 md:px-6">
+        <div class="text-center mb-16">
+            <h2 class="text-3xl md:text-4xl font-serif font-bold mb-4">Contact</h2>
+            <div class="w-24 h-1 bg-primary mx-auto"></div>
+            <p class="text-gray-600 mt-4 max-w-2xl mx-auto">
+                Do you have questions or would you like to get in touch with us? We look forward to hearing from you!
+            </p>
+        </div>
+        
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+            <div class="contact-form-container bg-white rounded-lg shadow-xl p-8 reveal-left hover-card">
+                <h3 class="text-2xl font-bold mb-6">Contact Information</h3>
+                
+                <div class="space-y-6">
+                    <div class="flex items-start p-4 rounded-lg contact-info-item">
+                        <div class="w-12 h-12 bg-primary bg-opacity-10 rounded-full flex items-center justify-center flex-shrink-0">
+                            <i class="fas fa-map-marker-alt text-primary text-xl"></i>
+                        </div>
+                        <div class="ml-4">
+                            <h4 class="text-lg font-medium mb-1">Address</h4>
+                            <p class="text-gray-600">Munich<br>Germany</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-start p-4 rounded-lg contact-info-item">
+                        <div class="w-12 h-12 bg-primary bg-opacity-10 rounded-full flex items-center justify-center flex-shrink-0">
+                            <i class="fas fa-phone-alt text-primary text-xl"></i>
+                        </div>
+                        <div class="ml-4">
+                            <h4 class="text-lg font-medium mb-1">Phone</h4>
+                            <p class="text-gray-600">N/A</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-start p-4 rounded-lg contact-info-item">
+                        <div class="w-12 h-12 bg-primary bg-opacity-10 rounded-full flex items-center justify-center flex-shrink-0">
+                            <i class="fas fa-envelope text-primary text-xl"></i>
+                        </div>
+                        <div class="ml-4">
+                            <h4 class="text-lg font-medium mb-1">Email</h4>
+                            <p class="text-gray-600">buchneresther08@gmail.com</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-8">
+                    <h4 class="text-lg font-medium mb-4">Follow Us</h4>
+                    <div class="flex space-x-4">
+                        <a href="#" class="social-icon w-10 h-10 bg-primary bg-opacity-10 rounded-full flex items-center justify-center hover:bg-primary hover:text-white transition-colors duration-300 text-primary">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="social-icon w-10 h-10 bg-primary bg-opacity-10 rounded-full flex items-center justify-center hover:bg-primary hover:text-white transition-colors duration-300 text-primary">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="social-icon w-10 h-10 bg-primary bg-opacity-10 rounded-full flex items-center justify-center hover:bg-primary hover:text-white transition-colors duration-300 text-primary">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                        <a href="#" class="social-icon w-10 h-10 bg-primary bg-opacity-10 rounded-full flex items-center justify-center hover:bg-primary hover:text-white transition-colors duration-300 text-primary">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="reveal-right">
+                <h3 class="text-2xl font-bold mb-6">Send Us a Message</h3>
+                {% include 'components/contact_form.html' %}
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Lightbox Container -->
+<div id="lightbox" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-90 hidden">
+    <div class="lightbox-content max-w-4xl w-full mx-4">
+        <div class="relative">
+            <!-- Close Button -->
+            <button onclick="closeLightbox()" class="absolute -top-12 right-0 text-white text-3xl hover:text-primary focus:outline-none">
+                <i class="fas fa-times"></i>
+            </button>
+            
+            <!-- Image Container -->
+            <div class="bg-white rounded-lg overflow-hidden shadow-2xl">
+                <div class="image-container">
+                    <img id="lightbox-image" src="" alt="" class="w-full">
+                </div>
+                <!-- Image Caption -->
+                <div class="p-6 lightbox-text-container">
+                    <h3 id="lightbox-title" class="text-2xl font-bold text-gray-800 mb-2"></h3>
+                    <p id="lightbox-description" class="text-gray-600"></p>
+                </div>
+            </div>
+            
+            <!-- Navigation Buttons -->
+            <div class="absolute top-1/2 transform -translate-y-1/2 w-full flex justify-between px-4">
+                <button onclick="changeLightboxImage(-1)" class="w-12 h-12 rounded-full bg-white text-primary hover:bg-primary hover:text-white transition-all duration-300 flex items-center justify-center focus:outline-none">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <button onclick="changeLightboxImage(1)" class="w-12 h-12 rounded-full bg-white text-primary hover:bg-primary hover:text-white transition-all duration-300 flex items-center justify-center focus:outline-none">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Lightbox-Funktionalität
+        window.currentImageIndex = 0;
+        window.galleryItems = Array.from(document.querySelectorAll('.gallery-item'));
+        
+        window.openLightbox = function(element) {
+            const lightbox = document.getElementById('lightbox');
+            const lightboxImage = document.getElementById('lightbox-image');
+            const lightboxTitle = document.getElementById('lightbox-title');
+            const lightboxDescription = document.getElementById('lightbox-description');
+            
+            // Bild-URL, Titel und Beschreibung aus dem angeklickten Element holen
+            const imageUrl = element.getAttribute('data-image');
+            const title = element.getAttribute('data-title');
+            const description = element.getAttribute('data-description');
+            
+            // Aktuellen Index für Navigation speichern
+            window.currentImageIndex = window.galleryItems.indexOf(element);
+            
+            // Lightbox-Inhalte aktualisieren
+            lightboxImage.src = imageUrl;
+            lightboxImage.alt = title;
+            lightboxTitle.textContent = title;
+            lightboxDescription.textContent = description;
+            
+            // Lightbox mit Animation anzeigen
+            lightbox.classList.remove('hidden');
+            lightbox.classList.add('animate-fade-in');
+            
+            // Tastatursteuerung aktivieren
+            document.addEventListener('keydown', handleLightboxKeydown);
+            
+            // Scroll verhindern
+            document.body.style.overflow = 'hidden';
+        };
+        
+        window.closeLightbox = function() {
+            const lightbox = document.getElementById('lightbox');
+            
+            // Lightbox mit Animation ausblenden
+            lightbox.classList.add('animate-fade-out');
+            
+            setTimeout(() => {
+                lightbox.classList.add('hidden');
+                lightbox.classList.remove('animate-fade-in', 'animate-fade-out');
+                
+                // Tastatursteuerung deaktivieren
+                document.removeEventListener('keydown', handleLightboxKeydown);
+                
+                // Scroll wieder aktivieren
+                document.body.style.overflow = '';
+            }, 300);
+        };
+        
+        window.changeLightboxImage = function(direction) {
+            let newIndex = window.currentImageIndex + direction;
+            
+            // Zirkuläre Navigation: Wenn am Ende, zum Anfang springen und umgekehrt
+            if (newIndex < 0) {
+                newIndex = window.galleryItems.length - 1;
+            } else if (newIndex >= window.galleryItems.length) {
+                newIndex = 0;
+            }
+            
+            // Neues Bild laden
+            openLightbox(window.galleryItems[newIndex]);
+        };
+        
+        function handleLightboxKeydown(e) {
+            switch (e.key) {
+                case 'Escape':
+                    closeLightbox();
+                    break;
+                case 'ArrowLeft':
+                    changeLightboxImage(-1);
+                    break;
+                case 'ArrowRight':
+                    changeLightboxImage(1);
+                    break;
+            }
+        }
+        
+        // Event-Listener für Klicks außerhalb des Inhalts, um die Lightbox zu schließen
+        document.getElementById('lightbox').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeLightbox();
+            }
+        });
+        
+        // ScrollReveal Konfiguration
+        const sr = ScrollReveal({
+            origin: 'bottom',
+            distance: '20px',
+            duration: 800,
+            delay: 200,
+            easing: 'ease-in-out',
+            reset: false
+        });
+        
+        // Hero-Titel-Animation
+        gsap.from('.hero-title', {
+            duration: 1.2,
+            y: 50,
+            opacity: 0,
+            ease: 'power3.out'
+        });
+        
+        // Scroll-Animationen
+        sr.reveal('.reveal-bottom', { origin: 'bottom' });
+        sr.reveal('.reveal-left', { origin: 'left' });
+        sr.reveal('.reveal-right', { origin: 'right' });
+        
+        // Projekt-Karten
+        sr.reveal('.project-card', { interval: 200 });
+        
+        // Galerie
+        sr.reveal('.gallery-item', { interval: 100 });
+        
+        // Statistische Zahlen werden durch Alpine.js animiert
+
+        // "Mehr News"-Button-Funktionalität
+        const loadMoreButton = document.getElementById('load-more-news');
+        const collapseNewsButton = document.getElementById('collapse-news');
+        let originalNewsHTML = null;
+        
+        if (loadMoreButton) {
+            loadMoreButton.addEventListener('click', function() {
+                // Aktuelle Seite aus dem data-Attribut holen
+                const currentPage = parseInt(this.getAttribute('data-current-page'));
+                const nextPage = currentPage + 1;
+                
+                // Button während des Ladens deaktivieren
+                this.disabled = true;
+                this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Wird geladen...';
+                
+                // Original-HTML speichern, wenn es das erste Mal ist
+                const newsContainer = document.getElementById('news-container');
+                if (!originalNewsHTML) {
+                    originalNewsHTML = newsContainer.innerHTML;
+                }
+                
+                // AJAX-Anfrage für weitere News
+                fetch(`/api/load-more-news?page=${nextPage}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        // Neue News-Einträge zum Container hinzufügen
+                        newsContainer.innerHTML += data.html;
+                        
+                        // Button aktualisieren oder entfernen
+                        if (data.has_more) {
+                            loadMoreButton.disabled = false;
+                            loadMoreButton.innerHTML = 'Mehr News';
+                            loadMoreButton.setAttribute('data-current-page', data.next_page);
+                        } else {
+                            // Button ausblenden, wenn keine weiteren News vorhanden sind
+                            loadMoreButton.style.display = 'none';
+                        }
+                        
+                        // "News einklappen"-Button anzeigen
+                        collapseNewsButton.style.display = 'inline-block';
+                        
+                        // ScrollReveal für neue Elemente initialisieren
+                        const newItems = newsContainer.querySelectorAll('.bg-white.rounded-lg:nth-last-child(-n+3)');
+                        sr.reveal(newItems, { interval: 200 });
+                    })
+                    .catch(error => {
+                        console.error('Fehler beim Laden weiterer News:', error);
+                        loadMoreButton.disabled = false;
+                        loadMoreButton.innerHTML = 'Mehr News laden';
+                    });
+            });
+        }
+        
+        if (collapseNewsButton) {
+            collapseNewsButton.addEventListener('click', function() {
+                // News einklappen - zum ursprünglichen Zustand zurückkehren
+                const newsContainer = document.getElementById('news-container');
+                
+                // Sanfte Animation
+                newsContainer.style.opacity = '0';
+                setTimeout(() => {
+                    // Original-HTML wiederherstellen
+                    newsContainer.innerHTML = originalNewsHTML;
+                    
+                    // "Mehr News"-Button wieder anzeigen
+                    if (loadMoreButton) {
+                        loadMoreButton.style.display = 'inline-block';
+                        loadMoreButton.disabled = false;
+                        loadMoreButton.innerHTML = 'Mehr News';
+                        loadMoreButton.setAttribute('data-current-page', '1');
+                    }
+                    
+                    // "News einklappen"-Button verstecken
+                    collapseNewsButton.style.display = 'none';
+                    
+                    // Fade-In-Animation
+                    newsContainer.style.opacity = '1';
+                    
+                    // ScrollReveal für die ursprünglichen Elemente initialisieren
+                    const originalItems = newsContainer.querySelectorAll('.bg-white.rounded-lg');
+                    sr.reveal(originalItems, { interval: 200 });
+                }, 300);
+            });
+        }
+    });
+</script>
+{% endblock %} 

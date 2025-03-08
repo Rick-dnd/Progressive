@@ -1,0 +1,201 @@
+{% extends 'admin/base.html' %}
+
+{% block title %}Edit News Entry - Admin - Elegant Progressive Ladies Club Munich e.V.{% endblock %}
+
+{% block extra_css %}
+<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css" rel="stylesheet">
+<style>
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+    
+    .image-preview {
+        max-width: 100%;
+        max-height: 200px;
+        margin-top: 10px;
+        border-radius: 5px;
+        box-shadow: 0 0 5px rgba(0,0,0,0.2);
+    }
+    
+    .custom-file-upload {
+        display: inline-block;
+        padding: 0.375rem 0.75rem;
+        background-color: #f8f9fa;
+        border: 1px solid #ced4da;
+        border-radius: 0.25rem;
+        cursor: pointer;
+        margin-top: 10px;
+    }
+    
+    .custom-file-upload:hover {
+        background-color: #e9ecef;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="d-flex align-items-center mb-4">
+                <a href="{{ url_for('news_index') }}" class="btn btn-outline-secondary me-3">
+                    <i class="fas fa-arrow-left"></i>
+                </a>
+                <h1 class="admin-title mb-0">
+                    <i class="fas fa-edit"></i> News-Eintrag bearbeiten
+                </h1>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="admin-card">
+                <div class="admin-card-header">
+                    <h2>{{ news.title }}</h2>
+                </div>
+                <div class="admin-card-body">
+                    <form action="{{ url_for('news_edit', id=news.id) }}" method="post" enctype="multipart/form-data">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="title" class="form-label">Titel <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" id="title" name="title" value="{{ news.title }}" required>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="content" class="form-label">Inhalt <span class="text-danger">*</span></label>
+                                    <textarea class="form-control" id="content" name="content" rows="10" required>{{ news.content }}</textarea>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="image_file" class="form-label">Bild</label>
+                                    <div class="mt-2">
+                                        <input type="file" class="form-control" id="image_file" name="image_file" accept="image/*">
+                                        <span id="file-selected">{% if news.image %}{{ news.image.split('/')[-1] }}{% else %}Keine Datei ausgewählt{% endif %}</span>
+                                    </div>
+                                    <small class="text-muted">Empfohlene Größe: 1200 x 800 Pixel, max. 2MB</small>
+                                    <div class="mt-2">
+                                        {% if news.image %}
+                                        <img id="image_preview" class="image-preview" src="{{ url_for('static', filename=news.image.replace('static/', '')) }}" alt="Bildvorschau" style="display: block;">
+                                        {% else %}
+                                        <img id="image_preview" class="image-preview" src="" alt="Bildvorschau">
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <div class="form-check mt-3">
+                                    <input class="form-check-input" type="checkbox" id="is_featured" name="is_featured" {% if news.is_featured %}checked{% endif %}>
+                                    <label class="form-check-label" for="is_featured">
+                                        Als Featured markieren
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <div class="form-check mt-3">
+                                    <input class="form-check-input" type="checkbox" id="is_published" name="is_published" {% if news.is_published %}checked{% endif %}>
+                                    <label class="form-check-label" for="is_published">
+                                        Veröffentlichen
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group mt-4 d-flex justify-content-between">
+                            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">
+                                <i class="fas fa-trash"></i> Löschen
+                            </button>
+                            
+                            <button type="submit" class="btn btn-success">
+                                <i class="fas fa-save"></i> Änderungen speichern
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">News-Eintrag löschen</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Sind Sie sicher, dass Sie den News-Eintrag "{{ news.title }}" löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Abbrechen</button>
+                <form action="{{ url_for('news_delete', id=news.id) }}" method="post">
+                    <button type="submit" class="btn btn-danger">Löschen</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script>
+<script>
+    $(document).ready(function() {
+        // Summernote-Editor initialisieren
+        $('#content').summernote({
+            height: 300,
+            toolbar: [
+                ['style', ['style']],
+                ['font', ['bold', 'underline', 'clear']],
+                ['color', ['color']],
+                ['para', ['ul', 'ol', 'paragraph']],
+                ['table', ['table']],
+                ['insert', ['link', 'picture']],
+                ['view', ['fullscreen', 'codeview', 'help']]
+            ],
+            callbacks: {
+                onImageUpload: function(files) {
+                    // Editor-interne Bildupload-Funktion - nicht verwendet
+                }
+            }
+        });
+        
+        // Datei-Upload-Handling für das Bild
+        $('#image_file').change(function() {
+            var file = this.files[0];
+            
+            if (file) {
+                // Dateinamen anzeigen
+                $('#file-selected').text(file.name);
+                
+                // Bildvorschau erstellen
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    $('#image_preview').attr('src', e.target.result);
+                    $('#image_preview').css('display', 'block');
+                };
+                reader.readAsDataURL(file);
+            } else {
+                $('#file-selected').text('Keine Datei ausgewählt');
+                $('#image_preview').css('display', 'none');
+            }
+        });
+        
+        // Vor dem Absenden des Formulars sicherstellen, dass HTML-Tags im Inhalt korrekt übertragen werden
+        $('form').submit(function() {
+            // Summernote aktualisieren, um HTML-Inhalt zu erfassen
+            $('#content').summernote('code', $('#content').summernote('code'));
+            return true;
+        });
+    });
+</script>
+{% endblock %} 

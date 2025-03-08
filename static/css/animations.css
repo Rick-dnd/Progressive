@@ -1,0 +1,1151 @@
+/* Basisanimationen */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideUp {
+    from { transform: translateY(50px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes slideDown {
+    from { transform: translateY(-50px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes slideLeft {
+    from { transform: translateX(50px); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes slideRight {
+    from { transform: translateX(-50px); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+    40% { transform: translateY(-20px); }
+    60% { transform: translateY(-10px); }
+}
+
+@keyframes floatY {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-15px); }
+    100% { transform: translateY(0px); }
+}
+
+@keyframes shimmer {
+    0% { background-position: -100% 0; }
+    100% { background-position: 100% 0; }
+}
+
+@keyframes gradientFlow {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* Neue Hero-Bereich Animationen */
+@keyframes backgroundAnimate {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+@keyframes float {
+    0% { transform: translateY(0px) translateX(0px) rotate(0deg); }
+    33% { transform: translateY(-10px) translateX(5px) rotate(2deg); }
+    66% { transform: translateY(5px) translateX(-5px) rotate(-2deg); }
+    100% { transform: translateY(0px) translateX(0px) rotate(0deg); }
+}
+
+@keyframes glitch {
+    0% {
+        transform: translate(0);
+        text-shadow: -2px 0 #ff00c1, 2px 0 #3498db;
+    }
+    2% {
+        transform: translate(-2px, 0);
+        text-shadow: 2px 0 #ff00c1, -2px 0 #3498db;
+    }
+    4% {
+        transform: translate(2px, 0);
+        text-shadow: -2px 0 #ff00c1, 2px 0 #3498db;
+    }
+    6% {
+        transform: translate(0, 2px);
+        text-shadow: 2px 0 #ff00c1, -2px 0 #3498db;
+    }
+    8% {
+        transform: translate(0, -2px);
+        text-shadow: -2px 0 #ff00c1, 2px 0 #3498db;
+    }
+    10% {
+        transform: translate(0);
+        text-shadow: -2px 0 #ff00c1, 2px 0 #3498db;
+    }
+    100% {
+        transform: translate(0);
+        text-shadow: -2px 0 #ff00c1, 2px 0 #3498db;
+    }
+}
+
+@keyframes mouseWheel {
+    0% { opacity: 1; transform: translateY(0); }
+    100% { opacity: 0; transform: translateY(6px); }
+}
+
+@keyframes arrowDown {
+    0% { opacity: 0; transform: translateY(-10px); }
+    60% { opacity: 1; transform: translateY(0); }
+    100% { opacity: 0; transform: translateY(10px); }
+}
+
+@keyframes shine {
+    0% { transform: translateX(-100%) rotate(30deg); }
+    100% { transform: translateX(400%) rotate(30deg); }
+}
+
+@keyframes lineGlow {
+    0%, 100% { box-shadow: 0 0 5px rgba(156, 39, 176, 0.6), 0 0 10px rgba(156, 39, 176, 0.4); }
+    50% { box-shadow: 0 0 20px rgba(156, 39, 176, 0.8), 0 0 30px rgba(156, 39, 176, 0.6); }
+}
+
+@keyframes typing {
+    from { width: 0 }
+    to { width: 100% }
+}
+
+@keyframes blink-caret {
+    from, to { border-color: transparent }
+    50% { border-color: rgba(255,255,255,0.8); }
+}
+
+@keyframes gradientText {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* Dynamischer Hintergrund */
+.background-animate {
+    background-size: 400% 400%;
+    animation: backgroundAnimate 15s ease infinite;
+}
+
+/* Schwebende Formen */
+.floating-shapes {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.shape {
+    position: absolute;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 50%;
+    backdrop-filter: blur(5px);
+    animation: float 12s ease-in-out infinite;
+}
+
+.shape-1 {
+    top: 15%;
+    left: 15%;
+    width: 120px;
+    height: 120px;
+    animation-delay: 0s;
+}
+
+.shape-2 {
+    top: 25%;
+    right: 20%;
+    width: 180px;
+    height: 180px;
+    animation-delay: -2s;
+}
+
+.shape-3 {
+    bottom: 20%;
+    left: 25%;
+    width: 160px;
+    height: 160px;
+    animation-delay: -4s;
+    border-radius: 30%;
+}
+
+.shape-4 {
+    bottom: 30%;
+    right: 25%;
+    width: 200px;
+    height: 200px;
+    animation-delay: -6s;
+    border-radius: 20%;
+}
+
+.shape-5 {
+    bottom: 40%;
+    left: 45%;
+    width: 150px;
+    height: 150px;
+    animation-delay: -8s;
+}
+
+/* Glitch Text Effekt */
+.glitch-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+.glitch-text {
+    position: relative;
+    animation: glitch 5s infinite;
+    animation-iteration-count: infinite;
+    animation-delay: 3s;
+    text-shadow: 0 0 10px rgba(255,255,255,0.8), 0 0 20px rgba(255,255,255,0.4);
+    color: white;
+}
+
+.glitch-text::before,
+.glitch-text::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0.9;
+}
+
+.glitch-text::before {
+    left: 2px;
+    text-shadow: -2px 0 #ff00c1, 0 0 10px rgba(255,0,193,0.8);
+    clip: rect(44px, 450px, 56px, 0);
+    animation: glitch-anim 5s infinite linear alternate-reverse;
+}
+
+.glitch-text::after {
+    left: -2px;
+    text-shadow: 2px 0 #3498db, 0 0 10px rgba(52,152,219,0.8);
+    clip: rect(44px, 450px, 56px, 0);
+    animation: glitch-anim2 5s infinite linear alternate-reverse;
+}
+
+@keyframes glitch-anim {
+    0% { clip: rect(8px, 9999px, 72px, 0); }
+    5% { clip: rect(78px, 9999px, 5px, 0); }
+    10% { clip: rect(33px, 9999px, 99px, 0); }
+    15% { clip: rect(13px, 9999px, 85px, 0); }
+    20% { clip: rect(75px, 9999px, 5px, 0); }
+    25% { clip: rect(54px, 9999px, 84px, 0); }
+    30% { clip: rect(4px, 9999px, 92px, 0); }
+    35% { clip: rect(11px, 9999px, 29px, 0); }
+    40% { clip: rect(22px, 9999px, 90px, 0); }
+    45% { clip: rect(98px, 9999px, 23px, 0); }
+    50% { clip: rect(34px, 9999px, 4px, 0); }
+    55% { clip: rect(2px, 9999px, 58px, 0); }
+    60% { clip: rect(65px, 9999px, 59px, 0); }
+    65% { clip: rect(48px, 9999px, 23px, 0); }
+    70% { clip: rect(77px, 9999px, 63px, 0); }
+    75% { clip: rect(23px, 9999px, 92px, 0); }
+    80% { clip: rect(19px, 9999px, 34px, 0); }
+    85% { clip: rect(70px, 9999px, 27px, 0); }
+    90% { clip: rect(33px, 9999px, 79px, 0); }
+    95% { clip: rect(24px, 9999px, 85px, 0); }
+    100% { clip: rect(79px, 9999px, 4px, 0); }
+}
+
+@keyframes glitch-anim2 {
+    0% { clip: rect(60px, 9999px, 42px, 0); }
+    5% { clip: rect(26px, 9999px, 64px, 0); }
+    10% { clip: rect(31px, 9999px, 26px, 0); }
+    15% { clip: rect(91px, 9999px, 57px, 0); }
+    20% { clip: rect(54px, 9999px, 70px, 0); }
+    25% { clip: rect(30px, 9999px, 79px, 0); }
+    30% { clip: rect(94px, 9999px, 34px, 0); }
+    35% { clip: rect(30px, 9999px, 68px, 0); }
+    40% { clip: rect(39px, 9999px, 23px, 0); }
+    45% { clip: rect(4px, 9999px, 65px, 0); }
+    50% { clip: rect(63px, 9999px, 27px, 0); }
+    55% { clip: rect(87px, 9999px, 19px, 0); }
+    60% { clip: rect(6px, 9999px, 83px, 0); }
+    65% { clip: rect(67px, 9999px, 80px, 0); }
+    70% { clip: rect(20px, 9999px, 44px, 0); }
+    75% { clip: rect(60px, 9999px, 21px, 0); }
+    80% { clip: rect(10px, 9999px, 78px, 0); }
+    85% { clip: rect(94px, 9999px, 99px, 0); }
+    90% { clip: rect(82px, 9999px, 31px, 0); }
+    95% { clip: rect(45px, 9999px, 3px, 0); }
+    100% { clip: rect(70px, 9999px, 86px, 0); }
+}
+
+/* Text-Glow Effekt */
+.text-glow {
+    text-shadow: 0 0 5px rgba(255,255,255,0.3), 0 0 10px rgba(255,255,255,0.2), 0 0 15px rgba(255,255,255,0.1);
+}
+
+/* 3D-Button Effekte */
+.perspective-3d {
+    perspective: 1000px;
+}
+
+.cta-button {
+    background: linear-gradient(135deg, #9c27b0, #e91e63);
+    color: white;
+    border-radius: 50px;
+    transform-style: preserve-3d;
+    transition: transform 0.3s, box-shadow 0.3s;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+}
+
+.cta-button:hover {
+    transform: translateY(-5px) scale(1.05);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+}
+
+.cta-shine {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        135deg,
+        rgba(255,255,255,0) 0%,
+        rgba(255,255,255,0.4) 50%,
+        rgba(255,255,255,0) 100%
+    );
+    transform: translateX(-100%) rotate(30deg);
+    animation: shine 3s infinite;
+}
+
+.cta-shadow {
+    position: absolute;
+    bottom: -10px;
+    left: 5%;
+    width: 90%;
+    height: 10px;
+    background: rgba(0,0,0,0.2);
+    filter: blur(10px);
+    border-radius: 50%;
+    transform-origin: center;
+    transition: transform 0.3s;
+}
+
+.cta-button:hover .cta-shadow {
+    transform: scaleX(1.1) scaleY(1.2);
+}
+
+/* Mouse Scroll Indikator */
+.scroll-indicator-container {
+    height: 80px;
+}
+
+.mouse {
+    width: 30px;
+    height: 50px;
+    border: 2px solid white;
+    border-radius: 15px;
+    position: relative;
+    margin: 0 auto;
+}
+
+.wheel {
+    width: 6px;
+    height: 6px;
+    background: white;
+    border-radius: 50%;
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    animation: mouseWheel 1.5s ease infinite;
+}
+
+.arrows {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.arrows span {
+    display: block;
+    width: 15px;
+    height: 15px;
+    border-right: 2px solid white;
+    border-bottom: 2px solid white;
+    transform: rotate(45deg);
+    margin: -5px 0;
+    animation: arrowDown 1.5s infinite;
+    opacity: 0;
+}
+
+.arrow-1 { animation-delay: 0s; }
+.arrow-2 { animation-delay: 0.2s; }
+.arrow-3 { animation-delay: 0.4s; }
+
+/* Netzwerk-Animation entfernt und durch Sternenhimmel ersetzt */
+@keyframes twinkle {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+}
+
+@keyframes shooting-star {
+    0% { 
+        transform: translateX(0) translateY(0) rotate(45deg); 
+        opacity: 1;
+    }
+    100% { 
+        transform: translateX(300px) translateY(300px) rotate(45deg); 
+        opacity: 0;
+    }
+}
+
+.particles-container {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
+/* Sondereffekte für einzelne Sterne */
+.star {
+    position: absolute;
+    background-color: #fff;
+    border-radius: 50%;
+}
+
+.star-twinkle {
+    animation: twinkle 2s infinite ease-in-out;
+}
+
+.star-shooting {
+    position: absolute;
+    background: linear-gradient(45deg, rgba(255,255,255,1), rgba(255,255,255,0));
+    width: 50px !important;
+    height: 1px !important;
+    opacity: 0;
+    animation: shooting-star 3s infinite linear;
+    animation-delay: calc(var(--delay) * 1s);
+}
+
+/* Gradient Text */
+.gradient-text {
+    background: linear-gradient(90deg, #ff00c1, #3498db, #9c27b0);
+    background-size: 200% auto;
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: gradientText 3s linear infinite;
+}
+
+/* Leuchtende Linien */
+.glow-lines {
+    pointer-events: none;
+}
+
+.line {
+    position: absolute;
+    background: rgba(156, 39, 176, 0.2);
+    animation: lineGlow 3s ease-in-out infinite;
+}
+
+.line1 {
+    top: 30%;
+    left: 0;
+    right: 0;
+    height: 1px;
+    transform: rotate(-5deg);
+}
+
+.line2 {
+    top: 45%;
+    left: 0;
+    right: 0;
+    height: 1px;
+    transform: rotate(3deg);
+}
+
+.line3 {
+    top: 60%;
+    left: 0;
+    right: 0;
+    height: 1px;
+    transform: rotate(-2deg);
+}
+
+/* Typing-Effekt */
+.typing-effect {
+    position: absolute;
+    left: 0;
+    bottom: -5px;
+    width: 100%;
+    height: 2px;
+    background: rgba(255, 255, 255, 0.5);
+    animation: typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite;
+}
+
+/* Hero-Content Animation */
+.hero-content {
+    animation: fadeIn 1s ease-out forwards;
+}
+
+/* Hero-Titel-Animation (bisherige Animation bleibt bestehen) */
+.hero-title {
+    animation: slideUp 1.2s ease-out;
+    position: relative;
+}
+
+.hero-title::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 3px;
+    background: #fff;
+    animation: slideRight 1.5s 0.5s forwards;
+}
+
+.hero-subtitle {
+    animation: fadeIn 1.5s ease-out 0.5s forwards;
+    opacity: 0;
+}
+
+.hero-cta {
+    animation: fadeIn 1.5s ease-out 1s forwards;
+    opacity: 0;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-cta::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.3);
+    transform: skewX(-30deg);
+    transition: all 0.7s ease;
+}
+
+.hero-cta:hover::before {
+    left: 100%;
+}
+
+/* Scroll-Pfeil */
+.scroll-indicator {
+    animation: bounce 2s infinite;
+}
+
+/* Projekt-Karten */
+.project-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.project-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+/* Statistik-Counter */
+.stat-counter {
+    display: inline-block;
+    position: relative;
+    font-weight: bold;
+}
+
+.stat-counter::after {
+    content: attr(data-suffix);
+    position: absolute;
+    right: -0.5em;
+}
+
+/* News-Karten */
+.news-card {
+    transition: transform 0.3s ease;
+    overflow: hidden;
+}
+
+.news-card:hover {
+    transform: translateY(-5px);
+}
+
+.news-card img {
+    transition: transform 0.5s ease;
+}
+
+.news-card:hover img {
+    transform: scale(1.05);
+}
+
+/* Galerie-Effekte */
+.gallery-item {
+    overflow: hidden;
+    position: relative;
+}
+
+.gallery-item img {
+    transition: transform 0.5s ease;
+}
+
+.gallery-item:hover img {
+    transform: scale(1.1);
+}
+
+.gallery-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+    padding: 1rem;
+    transform: translateY(100%);
+    transition: transform 0.3s ease;
+}
+
+.gallery-item:hover .gallery-overlay {
+    transform: translateY(0);
+}
+
+/* Formular-Animationen */
+.form-control {
+    position: relative;
+    margin-bottom: 1.5rem;
+}
+
+.form-control input,
+.form-control textarea {
+    width: 100%;
+    padding: 0.75rem 0;
+    font-size: 1rem;
+    border: none;
+    border-bottom: 1px solid #ddd;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+.form-control input:focus,
+.form-control textarea:focus {
+    border-color: var(--primary-color);
+}
+
+.form-control label {
+    position: absolute;
+    top: 0.75rem;
+    left: 0;
+    color: #888;
+    transition: all 0.3s ease;
+    pointer-events: none;
+}
+
+.form-animated input:focus ~ label,
+.form-animated input:not(:placeholder-shown) ~ label,
+.form-animated textarea:focus ~ label,
+.form-animated textarea:not(:placeholder-shown) ~ label {
+    top: -0.75rem;
+    font-size: 0.75rem;
+    color: var(--primary-color);
+    opacity: 1;
+    transform: translateY(-100%);
+}
+
+/* Input-Animations */
+.input-animated {
+    position: relative;
+}
+
+.input-animated::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background: var(--primary-color);
+    transition: width 0.4s ease, left 0.4s ease;
+}
+
+.input-animated:focus-within::after {
+    width: 100%;
+    left: 0;
+}
+
+/* Senden-Button Animation */
+.submit-btn {
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+}
+
+.submit-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+    z-index: -1;
+    transition: opacity 0.5s ease;
+    opacity: 0;
+}
+
+.submit-btn:hover::before {
+    opacity: 1;
+}
+
+/* Button-Hover-Effekte */
+.btn {
+    position: relative;
+    overflow: hidden;
+    transition: color 0.3s ease, background-color 0.3s ease;
+}
+
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.2);
+    transition: transform 0.5s;
+    transform: skewX(-15deg);
+    z-index: 1;
+}
+
+.btn:hover::before {
+    transform: translateX(200%) skewX(-15deg);
+}
+
+/* Flip-Card-Animation */
+.flip-card-inner {
+    transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transform-style: preserve-3d;
+}
+
+.flip-card.flipped .flip-card-inner {
+    transform: rotateY(180deg);
+}
+
+.flip-card-front,
+.flip-card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.flip-card-back {
+    transform: rotateY(180deg);
+}
+
+/* Glowing Effekt */
+.glow-effect {
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+}
+
+.glow-effect::before {
+    content: '';
+    position: absolute;
+    z-index: -1;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: conic-gradient(
+        transparent, 
+        rgba(156, 39, 176, 0.3), 
+        transparent 30%
+    );
+    animation: rotate 4s linear infinite;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.glow-effect:hover::before {
+    opacity: 1;
+}
+
+@keyframes rotate {
+    100% {
+        transform: rotate(1turn);
+    }
+}
+
+/* Shimmer-Effekt für Texte */
+.shimmer-text {
+    position: relative;
+    color: var(--primary-color);
+    background: linear-gradient(90deg, var(--primary-color), #fff, var(--primary-color));
+    background-size: 200%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: shimmer 3s infinite;
+}
+
+/* Counter-Animationen */
+.counter-item {
+    position: relative;
+    overflow: hidden;
+}
+
+.counter-item::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 3px;
+    bottom: 0;
+    left: 0;
+    background: linear-gradient(90deg, transparent, var(--secondary-color), transparent);
+    transform: translateX(-100%);
+    animation: slidein 3s forwards;
+}
+
+@keyframes slidein {
+    to { transform: translateX(100%); }
+}
+
+/* Animierte Buttons mit Hover-Effekten */
+.btn-animated {
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+    transition: color 0.5s ease;
+}
+
+.btn-animated::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, var(--secondary-color), var(--accent-color));
+    z-index: -1;
+    transform: scaleX(0);
+    transform-origin: 0 50%;
+    transition: transform 0.5s ease-out;
+}
+
+.btn-animated:hover::before {
+    transform: scaleX(1);
+}
+
+/* Projektkarten mit 3D-Hover-Effekt */
+.project-3d-hover {
+    transition: transform 0.5s ease;
+    perspective: 1000px;
+}
+
+.project-3d-hover:hover {
+    transform: rotateX(10deg) rotateY(10deg);
+}
+
+/* Image Zoom-Effekt */
+.zoom-container {
+    overflow: hidden;
+}
+
+.zoom-image {
+    transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.zoom-container:hover .zoom-image {
+    transform: scale(1.1);
+}
+
+/* Fancy Gradient Text */
+.gradient-text {
+    background: linear-gradient(90deg, var(--primary-color), var(--secondary-color), var(--accent-color));
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: gradientFlow 3s ease infinite;
+}
+
+/* Navbar-Animation für aktive Links */
+.nav-link {
+    position: relative;
+}
+
+.nav-link::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: -3px;
+    left: 0;
+    background-color: var(--primary-color);
+    transition: width 0.3s ease;
+}
+
+.nav-link:hover::after,
+.nav-link.active::after {
+    width: 100%;
+}
+
+/* Animierte Nummer-Kacheln */
+.stats-card {
+    transition: all 0.4s ease;
+    overflow: hidden;
+    position: relative;
+}
+
+.stats-card::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 100%);
+    top: -100%;
+    left: -100%;
+    transition: all 0.6s ease;
+}
+
+.stats-card:hover::before {
+    top: 0;
+    left: 0;
+}
+
+.stats-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
+/* Floating Elemente für visuelles Interesse */
+.float-element {
+    animation: floatY 4s ease-in-out infinite;
+}
+
+/* Galerie-Item mit eleganten Hover-Effekten */
+.gallery-item {
+    position: relative;
+    overflow: hidden;
+}
+
+.gallery-item img {
+    transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.gallery-item:hover img {
+    transform: scale(1.08);
+}
+
+.gallery-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+    padding: 20px;
+    transform: translateY(100%);
+    transition: transform 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+    opacity: 0;
+}
+
+.gallery-item:hover .gallery-overlay {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+/* Beeindruckende Hover-Effekte für Karten */
+.hover-card {
+    transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
+    position: relative;
+}
+
+.hover-card::after {
+    content: '';
+    position: absolute;
+    z-index: -1;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    border-radius: 0.5rem;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+    transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.hover-card:hover {
+    transform: translateY(-15px) scale(1.03);
+}
+
+.hover-card:hover::after {
+    opacity: 1;
+}
+
+/* Kombinierte Klasse für Elemente mit beiden Hover-Effekten */
+.hover-card.project-3d-hover:hover {
+    transform: translateY(-15px) scale(1.03) rotateX(10deg) rotateY(10deg);
+}
+
+/* Korrigiere die Perspektive für das About-Bild */
+#about .hover-card.project-3d-hover {
+    perspective: 1000px;
+    transform-style: preserve-3d;
+    transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
+    will-change: transform;
+}
+
+/* Gradient Hover-Effekt für Buttons */
+.gradient-hover {
+    background-size: 200% 200%;
+    background-image: linear-gradient(45deg, var(--primary-color) 0%, var(--secondary-color) 51%, var(--primary-color) 100%);
+    transition: all 0.5s ease;
+}
+
+.gradient-hover:hover {
+    background-position: right center;
+    box-shadow: 0 10px 20px rgba(156, 39, 176, 0.3);
+}
+
+/* Icon-Hover-Effekte */
+.icon-hover {
+    transition: all 0.3s ease;
+}
+
+.icon-hover:hover {
+    transform: scale(1.2);
+    color: var(--secondary-color);
+}
+
+/* Pulsierender Button */
+.pulse-btn {
+    position: relative;
+}
+
+.pulse-btn::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background: var(--primary-color);
+    border-radius: inherit;
+    z-index: -1;
+    animation: pulse-ring 1.5s infinite;
+}
+
+@keyframes pulse-ring {
+    0% {
+        transform: scale(0.95);
+        opacity: 0.7;
+    }
+    50% {
+        transform: scale(1.05);
+        opacity: 0.3;
+    }
+    100% {
+        transform: scale(0.95);
+        opacity: 0.7;
+    }
+}
+
+/* Spezifische Animation für das Vereinsbild */
+.about-image-container {
+    transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.about-image-container:hover {
+    transform: translateY(-15px) scale(1.05) rotateX(10deg) rotateY(10deg) !important;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25) !important;
+    z-index: 10;
+}
+
+.about-image-container img {
+    transition: all 0.5s ease;
+}
+
+.about-image-container:hover img {
+    transform: scale(1.05);
+}
+
+/* Klasse wird durch JavaScript hinzugefügt */
+.about-image-container.hover-active {
+    transform: translateY(-15px) scale(1.05) rotateX(10deg) rotateY(10deg) !important;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25) !important;
+    z-index: 10;
+}
+
+.about-image-container.hover-active img {
+    transform: scale(1.05);
+}
+
+/* Spezifische Stile für die Kontaktdaten-Elemente */
+.contact-info-item {
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    border: 1px solid transparent;
+    overflow: hidden;
+    background-color: rgba(255, 255, 255, 0.8);
+}
+
+.contact-info-item:hover {
+    transform: translateY(-8px) scale(1.02);
+    border-color: var(--primary-color);
+    box-shadow: 0 12px 24px rgba(156, 39, 176, 0.15);
+    background-color: white;
+    z-index: 10;
+}
+
+.contact-info-item:hover i {
+    transform: scale(1.2);
+    color: white;
+}
+
+.contact-info-item:hover .w-12 {
+    background-color: var(--primary-color);
+}
+
+.contact-info-item i {
+    transition: all 0.3s ease;
+}
+
+.contact-info-item .w-12 {
+    transition: all 0.3s ease;
+}
+
+/* Verbesserte Hover-Effekte für Kontaktdaten-Container */
+#contact .contact-form-container {
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    transform: translateY(0);
+}
+
+#contact .contact-form-container:hover {
+    transform: translateY(-15px);
+    box-shadow: 0 20px 40px rgba(156, 39, 176, 0.15);
+}
+
+/* Kontaktdaten-Icons mit subtiler Animation */
+.contact-info-item i {
+    transition: all 0.3s ease;
+}
+
+.contact-info-item:hover i {
+    transform: scale(1.2);
+} 
