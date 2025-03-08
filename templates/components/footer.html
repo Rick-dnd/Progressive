@@ -3,43 +3,68 @@
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
             <!-- Logo & About -->
             <div>
-                <h3 class="text-xl font-serif font-bold mb-4">Elegant Progressive Ladies Club Munich e.V.</h3>
-                <p class="text-gray-300 text-sm mb-6">Der Elegant Progressive Ladies Club Munich e.V. ist eine Gemeinschaft engagierter Frauen, die durch gesellschaftliches Engagement positive Veränderungen bewirken.</p>
+                <h3 class="text-xl font-serif font-bold mb-4">
+                    Elegant Progressive Ladies Club Munich
+                </h3>
+                <p class="text-gray-300 text-sm mb-6">
+                    The Elegant Progressive Ladies Club Munich is a community of dedicated women creating positive change through social engagement.
+                </p>
                 <div class="flex space-x-4">
-                    <a href="#" class="text-white hover:text-primary transition-colors duration-200">
+                    <a href="https://www.facebook.com/groups/311268775374242" rel="noopener" aria-label="Facebook" class="text-white hover:text-primary transition-colors duration-200">
                         <i class="fab fa-facebook-f"></i>
-                    </a>
-                    <a href="#" class="text-white hover:text-primary transition-colors duration-200">
-                        <i class="fab fa-instagram"></i>
-                    </a>
-                    <a href="#" class="text-white hover:text-primary transition-colors duration-200">
-                        <i class="fab fa-linkedin-in"></i>
-                    </a>
-                    <a href="#" class="text-white hover:text-primary transition-colors duration-200">
-                        <i class="fab fa-twitter"></i>
                     </a>
                 </div>
             </div>
             
             <!-- Links -->
             <div>
-                <h3 class="text-lg font-medium mb-4">Links</h3>
+                <h3 class="text-lg font-medium mb-4">
+                    Links
+                </h3>
                 <ul class="space-y-2 text-sm text-gray-300">
-                    <li><a href="{{ url_for('index') }}#about" class="hover:text-primary transition-colors duration-200">Über Uns</a></li>
-                    <li><a href="{{ url_for('index') }}#projects" class="hover:text-primary transition-colors duration-200">Projekte</a></li>
-                    <li><a href="{{ url_for('index') }}#news" class="hover:text-primary transition-colors duration-200">News</a></li>
-                    <li><a href="{{ url_for('index') }}#gallery" class="hover:text-primary transition-colors duration-200">Galerie</a></li>
-                    <li><a href="{{ url_for('index') }}#contact" class="hover:text-primary transition-colors duration-200">Kontakt</a></li>
+                    <li><a href="{{ url_for('index') }}#about" class="hover:text-primary transition-colors duration-200">
+                        About Us
+                    </a></li>
+                    <li><a href="{{ url_for('index') }}#projects" class="hover:text-primary transition-colors duration-200">
+                        Projects
+                    </a></li>
+                    <li><a href="{{ url_for('index') }}#news" class="hover:text-primary transition-colors duration-200">
+                        News
+                    </a></li>
+                    <li><a href="{{ url_for('index') }}#gallery" class="hover:text-primary transition-colors duration-200">
+                        Gallery
+                    </a></li>
+                    <li><a href="{{ url_for('index') }}#contact" class="hover:text-primary transition-colors duration-200">
+                        Contact
+                    </a></li>
+                </ul>
+                
+                <!-- SEO Backlinks -->
+                <h3 class="text-lg font-medium mb-4 mt-8">
+                    Partners
+                </h3>
+                <ul class="space-y-2 text-sm text-gray-300">
+                    <li><a href="https://stadt.muenchen.de/infos/engagement-vereine-initiativen.html" rel="noopener" target="_blank" class="hover:text-primary transition-colors duration-200">
+                        Munich Associations
+                    </a></li>
+                    <li><a href="https://www.stmas.bayern.de/ehrenamt/index.php" rel="noopener" target="_blank" class="hover:text-primary transition-colors duration-200">
+                        Voluntary Work Bavaria
+                    </a></li>
+                    <li><a href="https://www.deutsches-ehrenamt.de" rel="noopener" target="_blank" class="hover:text-primary transition-colors duration-200">
+                        German Voluntary Service
+                    </a></li>
                 </ul>
             </div>
             
-            <!-- Kontakt -->
+            <!-- Contact -->
             <div>
-                <h3 class="text-lg font-medium mb-4">Kontakt</h3>
+                <h3 class="text-lg font-medium mb-4">
+                    Contact
+                </h3>
                 <ul class="space-y-3 text-sm text-gray-300">
                     <li class="flex items-start">
                         <i class="fas fa-map-marker-alt mt-1 mr-3 text-primary"></i>
-                        <span>München</span>
+                        <span>Munich</span>
                     </li>
                     <li class="flex items-center">
                         <i class="fas fa-phone-alt mr-3 text-primary"></i>
@@ -54,10 +79,16 @@
         </div>
         
         <div class="border-t border-gray-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
-            <p class="text-gray-400 text-sm">&copy; {{ now.year }} Elegant Progressive Ladies Club Munich e.V. Alle Rechte vorbehalten.</p>
+            <p class="text-gray-400 text-sm">&copy; {{ now.year }} 
+                Elegant Progressive Ladies Club Munich. All rights reserved.
+            </p>
             <div class="flex space-x-4 mt-4 md:mt-0 text-sm text-gray-400">
-                <a href="{{ url_for('imprint') }}" class="hover:text-primary transition-colors duration-200">Impressum</a>
-                <a href="{{ url_for('privacy') }}" class="hover:text-primary transition-colors duration-200">Datenschutz</a>
+                <a href="{{ url_for('imprint') }}" class="hover:text-primary transition-colors duration-200">
+                    Imprint
+                </a>
+                <a href="{{ url_for('privacy') }}" class="hover:text-primary transition-colors duration-200">
+                    Privacy Policy
+                </a>
             </div>
         </div>
     </div>
